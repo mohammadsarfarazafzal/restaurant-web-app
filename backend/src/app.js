@@ -17,8 +17,8 @@ app.use(express.urlencoded({extended:true,limit:"16kb"}))
 //configuring-parser
 app.use(cookieParser())
 
-app.get('/', function (req, res) {
-  res.send('Server is up and running')
-})
+import userRouter from "./routes/user.routes.js"
+
+app.use("api/v1/users", userRouter)
 
 export {app}
