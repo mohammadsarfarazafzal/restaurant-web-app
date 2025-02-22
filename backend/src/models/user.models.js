@@ -5,13 +5,15 @@ import jwt from "jsonwebtoken"
 const userSchema=new mongoose.Schema({
     fullname:{
         type:String,
-        required:true
+        required:true,
+        trim: true
     },
     email:{
         type:String,
         required:true,
         unique:true,
-        lowercase:true
+        lowercase:true,
+        trim: true
     },
     password:{
         type:String,
@@ -20,10 +22,12 @@ const userSchema=new mongoose.Schema({
     phoneNumber:{
         type:Number,
         required:true,
+        trim: true
     },
     address:{
         type:String,
         required:true,
+        trim: true
     },
     refreshToken:{
         type:String,

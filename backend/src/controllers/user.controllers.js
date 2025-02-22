@@ -19,39 +19,63 @@ const generateTokens = async (user) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullname, email, password, phoneNumber, address } = req.body;
-
-  //If any field is blank
-  if (
-    [fullname, email, password, phoneNumber, address].some(
-      (field) => field.trim() === ""
-    )
-  ) {
-    throw new ApiError(400, "All fields are required");
-  }
-  //check if user is already there
-  const exitedUser = await User.findOne({
-    $or: [{ fullname }, { email }],
+    // Log the request body to debug
+    console.log("Request body:", req.body);
+    
+    const { fullname, email, password, phoneNumber, address } = req.body;
+  
+    // Check if all required fields exist and are not empty
+    if (!fullname || !email || !password || !phoneNumber || !address) {
+      throw new ApiError(400, "All fields are required");
+    }
+  
+    // Validate that none of the fields are just empty strings after trimming
+    if (
+      [fullname, email, password, phoneNumber, address].some(
+        (field) => field.trim() === ""
+      )
+    ) {
+      throw new ApiError(400, "All fields must contain valid values");
+    }
+  
+    // Check if user is already there
+    const existedUser = await User.findOne({
+      $or: [{ email }, { phoneNumber }],
+    });
+    
+    if (existedUser) {
+      throw new ApiError(409, "User already exists");
+    }
+  
+    // Create user object explicitly
+    const userData = {
+      fullname: fullname.trim(),
+      email: email.trim(),
+      password,
+      phoneNumber: phoneNumber.trim(),
+      address: address.trim()
+    };
+  
+    console.log("Creating user with data:", userData);
+  
+    // Create user
+    try {
+      const user = await User.create(userData);
+      
+      // Remove password and refreshToken
+      const createdUser = await User.findById(user._id).select(
+        "-password -refreshToken"
+      );
+  
+      // Sending the response
+      return res
+        .status(201)
+        .json(new ApiResponse(201, createdUser, "User registered successfully"));
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw new ApiError(500, `User creation failed: ${error.message}`);
+    }
   });
-  if (exitedUser) {
-    throw new ApiError(409, "User already exits.");
-  }
-  //create user
-  const user = await User.create({
-    fullname,
-    email,
-    password,
-  });
-  //remove password and refreshToken
-  const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
-
-  //sending the response
-  return res
-    .status(201)
-    .json(new ApiResponse(201, createdUser, "User registered successfully"));
-});
 
 const logInUser = asyncHandler(async (req, res) => {
   const { email, password, phoneNumber } = req.body;
