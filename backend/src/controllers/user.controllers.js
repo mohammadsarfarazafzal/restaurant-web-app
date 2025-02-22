@@ -17,14 +17,14 @@ const generateTokens = async (user) => {
     throw new ApiError("Failed Generating Tokens", 500, error);
   }
 };
-
+// register user
 const registerUser = asyncHandler(async (req, res) => {
   const { fullname, email, password, phoneNumber, address } = req.body;
 
   //If any field is blank
   if (
     [fullname, email, password, phoneNumber, address].some(
-      (field) => field.trim() === ""
+      (field) => field?.trim() === ""
     )
   ) {
     throw new ApiError(400, "All fields are required");
@@ -41,6 +41,8 @@ const registerUser = asyncHandler(async (req, res) => {
     fullname,
     email,
     password,
+    phoneNumber,
+    address
   });
   //remove password and refreshToken
   const createdUser = await User.findById(user._id).select(
