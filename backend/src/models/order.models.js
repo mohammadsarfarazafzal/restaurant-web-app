@@ -15,8 +15,6 @@ const odrerSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
-
     orderStatus: {
       type: String,
       enum: ["Pending", "Completed", "Cancelled"],
