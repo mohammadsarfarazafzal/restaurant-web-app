@@ -2,24 +2,25 @@ import mongoose from "mongoose";
 import { Menu } from "./menu.models";
 
 const cartSchema=new mongoose.Schema({
-    userId:{
-        type:mongoose.Schema.type.ObjectId,
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true,
     },
     items:[
         {
             menuItem:{
-                type:mongoose.Schema.type.ObjectId,
+                type:mongoose.Schema.Types.ObjectId,
                 ref:Menu,
             },
             quantity:{
                 type:Number,
                 default:0,
                 required:true
-            }
+            },   
         }
-    ]
+    ],
+    
 },{timestamps:true})
 
 export const Cart=mongoose.model("Cart",cartSchema);

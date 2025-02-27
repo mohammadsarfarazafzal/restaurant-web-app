@@ -3,24 +3,9 @@ import { User } from "./user.models";
 
 const odrerSchema = new mongoose.Schema(
   {
-    userId: {
+    items: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    items: [
-      {
-        menuItem: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Menu",
-          required: true,
-        },
-        quantity: { type: Number, required: true },
-      },
-    ],
-
-    totalPrice: {
-      type: Number,
+      ref: "Cart",
       required: true,
     },
     orderStatus: {
