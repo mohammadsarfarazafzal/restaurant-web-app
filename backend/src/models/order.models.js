@@ -4,21 +4,13 @@ import { User } from "./user.models";
 const odrerSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
-    items: [
-      {
-        menuItem: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Menu",
-          required: true,
-        },
-        quantity: { type: Number, required: true },
-      },
-    ],
-
+    items: {
+      type: Array,
+      required: true
+    },
     totalPrice: {
       type: Number,
       required: true,
