@@ -3,11 +3,18 @@ import { User } from "./user.models";
 
 const odrerSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     items: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cart",
       required: true,
     },
+
+
     orderStatus: {
       type: String,
       enum: ["Pending", "Completed", "Cancelled"],
