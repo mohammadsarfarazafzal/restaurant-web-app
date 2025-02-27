@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Menu } from "./menu.models";
 
 const cartSchema=new mongoose.Schema({
-    userId:{
+    user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true,
@@ -17,9 +17,10 @@ const cartSchema=new mongoose.Schema({
                 type: Number,
                 default: 0,
                 required:true
-            }
+            },   
         }
-    ]
+    ],
+    
 },{timestamps:true})
 
 cartSchema.methods.getTotalCartPrice = async function (items) {

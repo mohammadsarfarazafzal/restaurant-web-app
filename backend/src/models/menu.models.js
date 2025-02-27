@@ -6,7 +6,7 @@ const MenuSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   category: {
     type: String,
-
+    
     enum: ["stater", "mainCourse", "desert", "dinner", "lunch"],
 
     required: true,

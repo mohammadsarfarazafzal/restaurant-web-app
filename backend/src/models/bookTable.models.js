@@ -2,13 +2,11 @@ const mongoose = require("mongoose");
 
 const TableBookingSchema = new mongoose.Schema(
   {
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    name: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    phone: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     guests: { type: Number, required: true },
     // date: { type: Date, required: true },
     // time: { type: String, required: true },
