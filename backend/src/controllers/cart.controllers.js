@@ -4,9 +4,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+// add to cart
 const addToCart = asyncHandler(async (req, res) => {
     try {
         const cartData = await req.user?.cartData;
+        const itemId = req.body.itemId;
         if(!cartData){
             throw new ApiError("Cart Not Found", 401);
         }
@@ -27,9 +29,11 @@ const addToCart = asyncHandler(async (req, res) => {
     }
 })
 
+// remove from cart
 const removeFromCart = asyncHandler(async (req, res) => {
     try {
         const cartData = await req.user?.cartData;
+        const itemId = req.body.itemId;
         if(!cartData){
             throw new ApiError("Cart Not Found", 401);
         }
@@ -49,6 +53,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
     }
 })
 
+// fetch cart
 const getCartData = asyncHandler(async(req, res)=>{
     try {
         const cartData = await req.user?.cartData;

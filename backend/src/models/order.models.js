@@ -3,9 +3,16 @@ import { User } from "./user.models";
 
 const odrerSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     items: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cart",
+      type: Array,
+      required: true
+    },
+    totalPrice: {
+      type: Number,
       required: true,
     },
     orderStatus: {
