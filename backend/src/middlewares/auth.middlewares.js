@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
-import { User } from "../models/user.models";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { User } from "../models/user.models.js";
 
 const verifyJWT = asyncHandler(async (req, res, next)=>{
     try {
@@ -20,3 +20,5 @@ const verifyJWT = asyncHandler(async (req, res, next)=>{
         throw new ApiError("Unauthorized Access Token", 401, error?.message);
     }
 })
+
+export {verifyJWT}
