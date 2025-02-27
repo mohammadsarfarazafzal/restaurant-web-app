@@ -32,6 +32,10 @@ const userSchema=new mongoose.Schema({
     refreshToken:{
         type:String,
     },
+    cartData:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cart"
+    }
 },{timestamps:true})
 
 //Password hashing before save
