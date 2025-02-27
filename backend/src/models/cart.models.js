@@ -14,13 +14,21 @@ const cartSchema=new mongoose.Schema({
                 ref:Menu,
             },
             quantity:{
-                type:Number,
-                default:0,
+                type: Number,
+                default: 0,
                 required:true
             },   
         }
     ],
     
 },{timestamps:true})
+
+cartSchema.methods.getTotalCartPrice = async function (items) {
+    let totalCartPrice = 0;
+    this.items.forEach(element => {
+        totalCartPrice += element.menuItem.price * element.quantity;
+    });
+    return totalCartPrice;
+}
 
 export const Cart=mongoose.model("Cart",cartSchema);

@@ -27,4 +27,6 @@ import cartRouter from "./routes/cart.routes.js"
 
 app.use("/api/v1/cart", cartRouter)
 
+import menuRouter from "./routes/menu.routes.js"
+app.use("/api/v1/menu",menuRouter)
 export {app}

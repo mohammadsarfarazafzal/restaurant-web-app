@@ -8,11 +8,11 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 const addItem=asyncHandler(async(req,res)=>{
     const {name,price,category,isVeg}=req.body;
 
-    if(!name || !price || !category || isVeg===undefined || !image){
+    if(!name || !price || !category || isVeg===undefined ){
         throw new ApiError(400,"All fields required")
     }
 
-    const imageLocalPath=req.files?.image[0]?.path;
+    const imageLocalPath=req.file?.path;
     if(!imageLocalPath){
         throw new ApiError(400,"Image field required")
     }
@@ -27,7 +27,7 @@ const addItem=asyncHandler(async(req,res)=>{
         price,
         category,
         isVeg,
-        image
+        image:image.url
     })
 
     if(!newMenuItem){
@@ -41,7 +41,7 @@ const addItem=asyncHandler(async(req,res)=>{
 
 //Remove menu item
 const removeMenuItem=asyncHandler(async(req,res)=>{
-    const {id}=req.body();
+    const {id}=req.body;
     
     const deletedItem= await Menu.findByIdAndDelete(id);
 
@@ -61,4 +61,4 @@ const listMenuItems=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,menuItems,"Menu items listed successfully"))
 })
 
-export {addMenuItem,removeMenuItem,listMenuItems}
+export {addItem,removeMenuItem,listMenuItems}

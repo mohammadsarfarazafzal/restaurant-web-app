@@ -33,21 +33,11 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    cartData: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cart",
-    },
-    orderHistory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
-    // currentOrder:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:"Order"
-    // }
-  },
-  { timestamps: true }
-);
+    cartData:{
+        type: Object,
+        default: {}
+    }
+},{timestamps:true, minimize:false}) // minimize false is used so that our empty cartData attribute is created
 
 //Password hashing before save
 userSchema.pre("save", async function (next) {
