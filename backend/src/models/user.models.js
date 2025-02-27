@@ -33,10 +33,10 @@ const userSchema=new mongoose.Schema({
         type:String,
     },
     cartData:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Cart"
+        type: Object,
+        default: {}
     }
-},{timestamps:true})
+},{timestamps:true, minimize:false}) // minimize false is used so that our empty cartData attribute is created
 
 //Password hashing before save
 userSchema.pre("save",async function (next) {
