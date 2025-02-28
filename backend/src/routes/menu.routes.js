@@ -10,7 +10,7 @@ router.route("/add").post(
     addItem
 );
 //removeItem
-router.route("/remove").delete(removeMenuItem);
+router.route("/remove").post(removeMenuItem);
 
 //ListMenuItem
 router.route("/list").get(listMenuItems);
