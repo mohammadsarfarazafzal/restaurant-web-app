@@ -7,10 +7,13 @@ const MenuSchema = new mongoose.Schema({
   category: {
     type: String,
     
-    enum: ["stater", "mainCourse", "desert", "dinner", "lunch"],
+    enum: ["starter", "mainCourse", "desert", "dinner", "lunch"],
 
     required: true,
   }, // e.g., 'Starter', 'Main Course'
+  description:{
+    type:String,
+  },
   isVeg: { type: Boolean, required: true },
   image: { type: String ,required:true}, // Image URL
 });
