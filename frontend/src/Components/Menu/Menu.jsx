@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 function Menu() {
   const [searchedItems, setSearchedItems] = useState("");
   const [filter, setFilter] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
+
+  const [dishes,setDishes]=useState([]);
+  
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,57 +35,70 @@ function Menu() {
     }, 5000);
   };
 
-  const dishes = [
-    {
-      id: 1,
-      name: "Paneer Tikka 🧀",
-      img: "/Images/PaneerTikka.jpg",
-      price: 260,
-      food: "veg",
-    },
-    {
-      id: 2,
-      name: "Haka Noodles 🍜",
-      img: "Images/Noodels.jpg",
-      price: 150,
-      food: "veg",
-    },
-    {
-      id: 3,
-      name: "Italian Pizza 🍕",
-      img: "Images/Pizza.jpg",
-      price: 150,
-      food: "veg",
-    },
-    {
-      id: 4,
-      name: "Chinese Momo 🥟",
-      img: "Images/Momo.jpg",
-      price: 100,
-      food: "veg",
-    },
-    {
-      id: 5,
-      name: "Kolkata Biryani",
-      img: "Images/Biryani.jpg",
-      price: 300,
-      food: "non-veg",
-    },
-    {
-      id: 6,
-      name: "Burger",
-      img: "Images/Burger.jpg",
-      price: 50,
-      food: "non-veg",
-    },
-    {
-      id: 7,
-      name: "Dosa",
-      img: "Images/Dosa.jpg",
-      price: 80,
-      food: "veg",
-    },
-  ];
+
+  // const dishes = [
+  //   {
+  //     id: 1,
+  //     name: "Paneer Tikka 🧀",
+  //     img: "/Images/PaneerTikka.jpg",
+  //     price: 260,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Haka Noodles 🍜",
+  //     img: "Images/Noodels.jpg",
+  //     price: 150,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Italian Pizza 🍕",
+  //     img: "Images/Pizza.jpg",
+  //     price: 150,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Chinese Momo 🥟",
+  //     img: "Images/Momo.jpg",
+  //     price: 100,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Kolkata Biryani",
+  //     img: "Images/Biryani.jpg",
+  //     price: 300,
+  //     food: "non-veg",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Burger",
+  //     img: "Images/Burger.jpg",
+  //     price: 50,
+  //     food: "non-veg",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Dosa",
+  //     img: "Images/Dosa.jpg",
+  //     price: 80,
+  //     food: "veg",
+  //   },
+  // ];
+
+  const fetchMenu = async () =>{
+      try {
+        const res = await axios.get("http://localhost:8000/api/v1/menu/list");
+        if (res.data.success) {
+          setDishes(res.data.data);
+        }
+        console.log(res);
+      } catch (error) {
+        alert("Error while fetching menu.")
+      }
+  } 
 
   //Filter dishes as per user search and filter type
   // const filterDishes =
@@ -95,17 +114,21 @@ function Menu() {
   //           return false;
   //         }
   //       });
-  const filterDishes = dishes.filter((dish) => {
-    const searchMatches = dish.name
-      .toLowerCase()
-      .includes(searchedItems.toLowerCase());
-    const filterMatches = filter === "all" || dish.food === filter;
-    return searchMatches && filterMatches;
-  });
+  // const filterDishes = dishes.filter((dish) => {
+  //   const searchMatches = dish.name
+  //     .toLowerCase()
+  //     .includes(searchedItems.toLowerCase());
+  //   const filterMatches = filter === "all" || dish.food === filter;
+    
+  //   return searchMatches && filterMatches;
+  // });
 
   const handleSearch = () => {
     searchedItems;
   };
+  useEffect(()=>{
+    fetchMenu();
+  },[])
   return (
     <div className="bg-gray-100">
       {/* Header */}
@@ -157,25 +180,25 @@ function Menu() {
         </div>
         {/* Menu's Section */}
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
-          {filterDishes.map((dish) => (
+          {dishes.map((dish) => (
             <div
               key={dish.id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
             >
               <img
-                src={dish.img}
+                src={dish.image}
                 alt={dish.name}
                 className=" w-32 md:w-full md:h-60 h-45 object-cover"
               />
 
-              {/* Content of dish card */}
+              
 
               <div className="p-4 flex  w-40 flex-col justify-between">
                 <div>
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">{dish.food}</p>
+                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg}</p>
                   <p className="text-sm md:text-lg font-semibold text-orange-500">
                     {"\u20B9"}
                     {dish.price}.00
