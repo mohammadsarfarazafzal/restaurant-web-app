@@ -1,50 +1,62 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
-    Card,
-    Input,
-    Checkbox,
-    Button,
-    Typography,
-  } from "@material-tailwind/react";
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 
-const SignUpForm = () => {
+const LoginForm = () => {
+  const [formdata, setFormData] = useState({
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
+  const navigate = useNavigate();
+  const notify = () => toast("Log In Successfully!");
 
-  const navigate=useNavigate()
-    const register = async () => {
-        try {
-            
-        } catch (error) {
-            
-        }
+  const login = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/users/login",
+        formdata,
+        setFormData({
+          email: "",
+          password: "",
+          phoneNumber: "",
+        })
+      );
+      console.log(res.data);
+      notify();
+    } catch (error) {
+      console.log("Login Failed");
     }
+  };
   return (
-    <div className='flex justify-center items-center'>
-        <Card color="transparent" shadow={false}>
+    <div className="flex justify-center items-center">
+      <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
-          Sign Up
+          Sign In
         </Typography>
         <Typography color="gray" className="mt-1 font-normal">
-          Nice to meet you! Enter your details to register.
+          Welcome back! Enter your details to login.
         </Typography>
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
           <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Your Name
-            </Typography>
-            <Input
-              size="lg"
-              placeholder="name@mail.com"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Your Email
             </Typography>
             <Input
               size="lg"
+              value={formdata.email}
+              onChange={(e) =>
+                setFormData({ ...formdata, email: e.target.value })
+              }
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
@@ -56,18 +68,11 @@ const SignUpForm = () => {
             </Typography>
             <Input
               size="lg"
+              value={formdata.phoneNumber}
+              onChange={(e) =>
+                setFormData({ ...formdata, phoneNumber: e.target.value })
+              }
               placeholder="+91"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Your Complete Address
-            </Typography>
-            <Input
-              size="lg"
-              placeholder="Building Number, Street, City, Pincode, State"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -78,6 +83,10 @@ const SignUpForm = () => {
             </Typography>
             <Input
               type="password"
+              value={formdata.password}
+              onChange={(e) =>
+                setFormData({ ...formdata, password: e.target.value })
+              }
               size="lg"
               placeholder="********"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -105,28 +114,35 @@ const SignUpForm = () => {
             containerProps={{ className: "-ml-2.5" }}
           />
           <Button
-          onClick={()=>{
-            register();
-          }}
-          className="mt-6" fullWidth>
-            sign up
+            onClick={() => {
+              login();
+              navigate("/Menu")
+            }}
+            className="mt-6"
+            fullWidth
+          >
+            Sign In
           </Button>
+
+          <ToastContainer />
           <Typography color="gray" className="mt-4 text-center font-normal">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             {/* <a href="#" className="font-medium text-gray-900">
               Sign In
             </a> */}
-            <button className="font-medium text-gray-900"
-            onClick={()=>{
-              navigate("/Login")
-            }}>
-              Sign in
+            <button
+              className="font-medium text-gray-900"
+              onClick={() => {
+                navigate("/SignUp");
+              }}
+            >
+              Sign up
             </button>
           </Typography>
         </form>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpForm
+export default LoginForm;

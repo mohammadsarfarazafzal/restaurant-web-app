@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layout";
-import { Home, Menu, Contact, About, Services, BookTable,Cart, SignUpForm } from "./Components";
+import { Home, Menu, Contact, About, Services, BookTable,Cart, SignUpForm, LoginForm } from "./Components";
 import { Provider } from "react-redux";
 import {store} from "./StateManagement/Cart_Management/app/store";
 
@@ -42,6 +42,10 @@ function App() {
         {
           path: "SignUp",
           element: <SignUpForm />,
+        },
+        {
+          path:"Login",
+          element:<LoginForm/>
         },
         {
           path:"Cart",
