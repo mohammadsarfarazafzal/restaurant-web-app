@@ -1,4 +1,8 @@
 import React from 'react'
+import axios from "axios"
+import navigate from useNavigate()
+import { ToastContainer, toast } from 'react-toastify';
+import { useState } from 'react';
 import {
     Card,
     Input,
@@ -8,10 +12,32 @@ import {
   } from "@material-tailwind/react";
 
 const SignUpForm = () => {
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+    password: ""
+  })
+  const notify = () => toast("Thank You, Account Created Successfully!");
     const register = async () => {
         try {
+            const res = await axios.post("http://localhost:8000/api/v1/users/register",formData);
+            setFormData({
+              fullname: "",
+              email: "",
+              phoneNumber: "",
+              address: "",
+              password: ""
+            })
+            notify();
+            setTimeout(()=>{
+              navigate("/login");
+            },3000)
+            console.log(res);
             
         } catch (error) {
+            console.error(error);
             
         }
     }
@@ -30,6 +56,8 @@ const SignUpForm = () => {
               Your Name
             </Typography>
             <Input
+              value={formData.fullname}
+              onChange={(e)=>{setFormData({...formData, fullname: e.target.value})}}
               size="lg"
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -41,6 +69,8 @@ const SignUpForm = () => {
               Your Email
             </Typography>
             <Input
+            value={formData.email}
+              onChange={(e)=>{setFormData({...formData, email: e.target.value})}}
               size="lg"
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -52,6 +82,8 @@ const SignUpForm = () => {
               Your Number
             </Typography>
             <Input
+            value={formData.phoneNumber}
+              onChange={(e)=>{setFormData({...formData, phoneNumber: e.target.value})}}
               size="lg"
               placeholder="+91"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -63,6 +95,8 @@ const SignUpForm = () => {
               Your Complete Address
             </Typography>
             <Input
+            value={formData.address}
+            onChange={(e)=>{setFormData({...formData, address: e.target.value})}}
               size="lg"
               placeholder="Building Number, Street, City, Pincode, State"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -74,6 +108,8 @@ const SignUpForm = () => {
               Password
             </Typography>
             <Input
+            value={formData.password}
+            onChange={(e)=>{setFormData({...formData, password: e.target.value})}}
               type="password"
               size="lg"
               placeholder="********"
@@ -108,6 +144,7 @@ const SignUpForm = () => {
           className="mt-6" fullWidth>
             sign up
           </Button>
+          <ToastContainer />
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{" "}
             <a href="#" className="font-medium text-gray-900">
