@@ -7,5 +7,6 @@ import About from "./About/About"
 import Services from "./Services/Services"
 import BookTable from "./BookTable/BookTable"
 import Cart from "./Cart/Cart"
+import SignUpForm from "./Form/SignUpForm"
 
-export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart}
+export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm}
