@@ -20,7 +20,14 @@ const SignUpForm = () => {
     password: ""
   })
   const navigate = useNavigate();
-  const notify = () => toast("Thank You, Account Created Successfully!");
+  const notify = (cond, message) => {
+    if(cond){
+      toast.success(message)
+    }
+    else{
+      toast.error(message)
+    }
+  }
     const register = async () => {
         try {
             const res = await axios.post("http://localhost:8000/api/v1/users/register",formData);
@@ -31,14 +38,16 @@ const SignUpForm = () => {
               address: "",
               password: ""
             })
-            notify();
+            console.log(res);
+            if(res.data.success){
+              notify(true,"Thank You, Account Created Successfully!");
             setTimeout(()=>{
               navigate("/login");
             },3000)
-            console.log(res);
-            
+            }
         } catch (error) {
             console.error(error);
+            notify(false, "Account Creation Failed")
             
         }
     }

@@ -11,7 +11,6 @@ const generateTokens = async (user) => {
 
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
-
     return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError("Failed Generating Tokens", 500, error);
@@ -118,11 +117,12 @@ const logOutUser = asyncHandler(async (req, res) => {
 
 //refreshAccessToken
 const refreshAccessToken = asyncHandler(async (req, res) => {
-  const incomingRefreshToken =
-    req.cookies.refreshToken || req.body.refreshToken;
+  const { incomingRefreshToken } = req.body;
+  console.log("Received refresh token:", incomingRefreshToken);
 
   try {
     if (!incomingRefreshToken) {
+      console.log("No refresh token provided");
       throw new ApiError(401, "Unauthorized request");
     }
 
@@ -134,23 +134,25 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     const user = await User.findById(decodedToken?._id);
 
     if (!user) {
+      console.log("User not found for ID:", decodedToken?._id);
       throw new ApiError(401, "Invalid refresh token");
     }
 
     if (incomingRefreshToken !== user?.refreshToken) {
       throw new ApiError(401, "Refresh token is expired or used");
     }
-    //if refreh token is matched then
+
     const options = {
       httpOnly: true,
       secure: true,
     };
-    const { accessToken, newRefreshToken } = await generateTokens(user._id);
+
+    const { accessToken, newRefreshToken } = await generateTokens(user);
 
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .send("refreshToken", newRefreshToken, options)
+      .cookie("refreshToken", newRefreshToken, options)
       .json(
         new ApiResponse(
           200,
@@ -162,7 +164,15 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid refreshToken");
+    // Handle specific JWT errors
+    let errorMessage = "Invalid refresh token";
+    if (error instanceof jwt.TokenExpiredError) {
+      errorMessage = "Refresh token expired";
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      errorMessage = "Invalid refresh token";
+    }
+    
+    throw new ApiError(401, errorMessage);
   }
 });
 
@@ -188,4 +198,4 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 
 
-export { registerUser, logInUser, logOutUser };
+export { registerUser, logInUser, logOutUser, refreshAccessToken };
