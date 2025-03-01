@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from "axios"
-import navigate from useNavigate()
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { useState } from 'react';
 import {
@@ -19,6 +19,7 @@ const SignUpForm = () => {
     address: "",
     password: ""
   })
+  const navigate = useNavigate();
   const notify = () => toast("Thank You, Account Created Successfully!");
     const register = async () => {
         try {
@@ -147,9 +148,15 @@ const SignUpForm = () => {
           <ToastContainer />
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{" "}
-            <a href="#" className="font-medium text-gray-900">
+            {/* <a href="#" className="font-medium text-gray-900">
               Sign In
-            </a>
+            </a> */}
+            <button className="font-medium text-gray-900"
+            onClick={()=>{
+              navigate("/Login")
+            }}>
+              Sign in
+            </button>
           </Typography>
         </form>
       </Card>
