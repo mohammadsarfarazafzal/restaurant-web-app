@@ -54,6 +54,14 @@ function Navbar() {
         >
           Book Table
         </button></Link>
+        <Link to="/signup">
+        <button
+          className={
+            "hidden md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+          }
+        >
+          Sign Up
+        </button></Link>
       </div>
 
       {/*MENU BUTTON FOR MOBILE */}
