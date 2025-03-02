@@ -7,13 +7,11 @@ import axios from 'axios';
 
 function Menu() {
   const [searchedItems, setSearchedItems] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [dropDown, setDropDown] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
 
   const [dishes,setDishes]=useState([]);
-  
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,93 +33,29 @@ function Menu() {
     }, 5000);
   };
 
-
-  // const dishes = [
-  //   {
-  //     id: 1,
-  //     name: "Paneer Tikka 🧀",
-  //     img: "/Images/PaneerTikka.jpg",
-  //     price: 260,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Haka Noodles 🍜",
-  //     img: "Images/Noodels.jpg",
-  //     price: 150,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Italian Pizza 🍕",
-  //     img: "Images/Pizza.jpg",
-  //     price: 150,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Chinese Momo 🥟",
-  //     img: "Images/Momo.jpg",
-  //     price: 100,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Kolkata Biryani",
-  //     img: "Images/Biryani.jpg",
-  //     price: 300,
-  //     food: "non-veg",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Burger",
-  //     img: "Images/Burger.jpg",
-  //     price: 50,
-  //     food: "non-veg",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Dosa",
-  //     img: "Images/Dosa.jpg",
-  //     price: 80,
-  //     food: "veg",
-  //   },
-  // ];
-
   const fetchMenu = async () =>{
       try {
         const res = await axios.get("http://localhost:8000/api/v1/menu/list");
         if (res.data.success) {
           setDishes(res.data.data);
         }
-        console.log(res);
       } catch (error) {
         alert("Error while fetching menu.")
       }
   } 
-
-  //Filter dishes as per user search and filter type
-  // const filterDishes =
-  //   searchedItems === ""
-  //     ? dishes
-  //     : dishes.filter((dish) => {
-  //         const dishName = dish.name.toLowerCase();
-  //         const searhedDish = searchedItems.toLowerCase();
-
-  //         if (dishName.indexOf(searchedItems) !== -1) {
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  // const filterDishes = dishes.filter((dish) => {
-  //   const searchMatches = dish.name
-  //     .toLowerCase()
-  //     .includes(searchedItems.toLowerCase());
-  //   const filterMatches = filter === "all" || dish.food === filter;
+  
+  const filterDishes = dishes.filter((dish) => {
+    const searchMatches = dish.name
+      .toLowerCase()
+      .includes(searchedItems.toLowerCase());    
+    function checkVeg(){
+      return dropDown==="veg"?true:false;
+    }
+    const filterMatches = dropDown === "all" || dish.isVeg === checkVeg();
+    console.log(filterMatches);
     
-  //   return searchMatches && filterMatches;
-  // });
+    return searchMatches && filterMatches;
+  });
 
   const handleSearch = () => {
     searchedItems;
@@ -170,8 +104,8 @@ function Menu() {
           <span className="font-medium text-gray-700">Filter By:</span>
           <select
             className="border border-gray-300 rounded-md p-2"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            value={dropDown}
+            onChange={(e) => setDropDown(e.target.value)}
           >
             <option value="all">All</option>
             <option value="veg">Veg</option>
@@ -180,7 +114,7 @@ function Menu() {
         </div>
         {/* Menu's Section */}
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
-          {dishes.map((dish) => (
+          {filterDishes.map((dish) => (
             <div
               key={dish.id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
@@ -198,7 +132,7 @@ function Menu() {
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg}</p>
+                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg?"🥗 Veg":"🍗 Non-Veg"}</p>
                   <p className="text-sm md:text-lg font-semibold text-orange-500">
                     {"\u20B9"}
                     {dish.price}.00
