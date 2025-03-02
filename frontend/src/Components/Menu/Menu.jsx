@@ -198,7 +198,7 @@ function Menu() {
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg}</p>
+                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg ? "Veg 🌱" : "Non-Veg 🍗"}</p>
                   <p className="text-sm md:text-lg font-semibold text-orange-500">
                     {"\u20B9"}
                     {dish.price}.00
