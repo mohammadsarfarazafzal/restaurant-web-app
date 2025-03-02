@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isMenuClicked, setMenuClicked] = useState(false);
+  const [logIn, setLogIn] = useState(false);
 
   const handleMenuClicked = () => {
     setMenuClicked(!isMenuClicked);
@@ -10,6 +11,8 @@ function Navbar() {
   const handleMenuItemsClicked=()=>{
     setMenuClicked(!isMenuClicked);
   }
+
+
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-8 py-4 shadow-lg">
       {/* Logo */}
@@ -54,10 +57,20 @@ function Navbar() {
         >
           Book Table
         </button></Link>
+        
+        
+        <Link to="/account">
+        <button
+          className={
+            `${logIn?"md:block":"none"} bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base`
+          }
+        >
+          Account
+        </button></Link>
         <Link to="/signup">
         <button
           className={
-            "hidden md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+            `${logIn?"none":"md:block"} bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base`
           }
         >
           Sign Up
