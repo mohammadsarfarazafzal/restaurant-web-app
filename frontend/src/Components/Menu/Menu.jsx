@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState , useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ function Menu() {
         alert("Error while fetching menu.")
       }
   } 
-  
+
   const filterDishes = dishes.filter((dish) => {
     const searchMatches = dish.name
       .toLowerCase()
@@ -52,7 +52,6 @@ function Menu() {
       return dropDown==="veg"?true:false;
     }
     const filterMatches = dropDown === "all" || dish.isVeg === checkVeg();
-    console.log(filterMatches);
     
     return searchMatches && filterMatches;
   });
@@ -60,6 +59,7 @@ function Menu() {
   const handleSearch = () => {
     searchedItems;
   };
+
   useEffect(()=>{
     fetchMenu();
   },[])
@@ -116,7 +116,7 @@ function Menu() {
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
           {filterDishes.map((dish) => (
             <div
-              key={dish.id}
+              key={dish._id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
             >
               <img

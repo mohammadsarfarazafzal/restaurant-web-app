@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify"
 
 import {
   Card,
@@ -18,6 +19,8 @@ const LoginForm = () => {
   });
   const navigate = useNavigate();
 
+  const notify = (message) => {toast.error(message)}
+
   const login = async () => {
     try {
       const res = await axios.post(
@@ -29,9 +32,12 @@ const LoginForm = () => {
           phoneNumber: "",
         })
       );
-      console.log(res.data);
+      if(res.data.success){
+        navigate("/Menu")
+      }
     } catch (error) {
       console.log("Login Failed");
+      notify()
     }
   };
   return (
@@ -113,13 +119,13 @@ const LoginForm = () => {
           <Button
             onClick={() => {
               login();
-              navigate("/Menu")
             }}
             className="mt-6"
             fullWidth
           >
             Sign In
           </Button>
+          <ToastContainer />
           <Typography color="gray" className="mt-4 text-center font-normal">
             Don't have an account?{" "}
             {/* <a href="#" className="font-medium text-gray-900">

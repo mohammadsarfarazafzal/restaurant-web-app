@@ -9,5 +9,6 @@ import BookTable from "./BookTable/BookTable"
 import Cart from "./Cart/Cart"
 import SignUpForm from "./Form/SignUpForm"
 import LoginForm from "./Form/LoginForm"
+import Account from "./Account/Account"
 
-export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm}
+export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm, Account}
