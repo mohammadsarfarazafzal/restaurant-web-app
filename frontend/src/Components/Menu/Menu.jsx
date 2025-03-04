@@ -17,32 +17,21 @@ function Menu() {
   const navigate = useNavigate();
 
   const handleAddToCart = async (item) => {
-    // dispatch(addToCart(item)); // Redux me item add karo
-    // navigate("/Cart"); // Cart page par le jao
-    // console.log(item);
-
-    const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
-      itemId:item
-    });
-
-    console.log(res);
-
-    //showing the pop up
-    setShowPopup(true);
-
-    //showing checkOut button
-    setcheckOutButton(true);
-
-    //hide the pop-up after 2 sec
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 2000);
-  };
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
+        itemId:item
+      }, {withCredentials:true})
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const fetchMenu = async () =>{
       try {
         const res = await axios.get("http://localhost:8000/api/v1/menu/list");
         if (res.data.success) {
+          console.log(res.data.data);
           setDishes(res.data.data);
         }
       } catch (error) {
@@ -63,7 +52,7 @@ function Menu() {
   });
 
   const handleSearch = () => {
-    searchedItems;
+    console.log(dishes);
   };
 
   useEffect(()=>{

@@ -69,7 +69,6 @@ const SignUpForm = () => {
               value={formData.fullname}
               onChange={(e)=>{setFormData({...formData, fullname: e.target.value})}}
               size="lg"
-              placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
