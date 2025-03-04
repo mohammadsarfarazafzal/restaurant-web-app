@@ -16,10 +16,16 @@ function Menu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleAddToCart = (item) => {
-    dispatch(addToCart(item)); // Redux me item add karo
+  const handleAddToCart = async (item) => {
+    // dispatch(addToCart(item)); // Redux me item add karo
     // navigate("/Cart"); // Cart page par le jao
     // console.log(item);
+
+    const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
+      itemId:item
+    });
+
+    console.log(res);
 
     //showing the pop up
     setShowPopup(true);
@@ -27,10 +33,10 @@ function Menu() {
     //showing checkOut button
     setcheckOutButton(true);
 
-    //hide the pop-up after 7 sec
+    //hide the pop-up after 2 sec
     setTimeout(() => {
       setShowPopup(false);
-    }, 5000);
+    }, 2000);
   };
 
   const fetchMenu = async () =>{
@@ -140,7 +146,7 @@ function Menu() {
                 </div>
                 <button
                   className="mt-4 w-full bg-orange-500 text-white py-1 text-xs md:text-[1rem] rounded hover:bg-orange-600"
-                  onClick={() => handleAddToCart(dish)}
+                  onClick={() => handleAddToCart(dish._id)}
                 >
                   Add to Cart
                 </button>

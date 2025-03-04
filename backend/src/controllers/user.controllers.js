@@ -8,7 +8,6 @@ const generateTokens = async (user) => {
   try {
     const refreshToken = user.generateRefreshToken();
     const accessToken = user.generateAccessToken();
-
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
     return { accessToken, refreshToken };
@@ -75,7 +74,8 @@ const logInUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax'
   };
 
   return res
@@ -131,7 +131,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET
     );
 
+    console.log("token decoded", decodedToken);
+    
+
     const user = await User.findById(decodedToken?._id);
+
+    console.log("user found", user);
 
     if (!user) {
       console.log("User not found for ID:", decodedToken?._id);
@@ -144,11 +149,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const options = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
     };
 
     const { accessToken, newRefreshToken } = await generateTokens(user);
-
+    console.log("generated: ",accessToken, newRefreshToken);
+    
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
