@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState , useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +18,16 @@ function Menu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleAddToCart = (item) => {
-    dispatch(addToCart(item)); // Redux me item add karo
+  const handleAddToCart = async (item) => {
+    // dispatch(addToCart(item)); // Redux me item add karo
     // navigate("/Cart"); // Cart page par le jao
     // console.log(item);
+
+    const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
+      itemId:item
+    });
+
+    console.log(res);
 
     //showing the pop up
     setShowPopup(true);
@@ -29,10 +35,10 @@ function Menu() {
     //showing checkOut button
     setcheckOutButton(true);
 
-    //hide the pop-up after 7 sec
+    //hide the pop-up after 2 sec
     setTimeout(() => {
       setShowPopup(false);
-    }, 5000);
+    }, 2000);
   };
 
 
@@ -100,32 +106,22 @@ function Menu() {
       }
   } 
 
-  //Filter dishes as per user search and filter type
-  // const filterDishes =
-  //   searchedItems === ""
-  //     ? dishes
-  //     : dishes.filter((dish) => {
-  //         const dishName = dish.name.toLowerCase();
-  //         const searhedDish = searchedItems.toLowerCase();
-
-  //         if (dishName.indexOf(searchedItems) !== -1) {
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  // const filterDishes = dishes.filter((dish) => {
-  //   const searchMatches = dish.name
-  //     .toLowerCase()
-  //     .includes(searchedItems.toLowerCase());
-  //   const filterMatches = filter === "all" || dish.food === filter;
+  const filterDishes = dishes.filter((dish) => {
+    const searchMatches = dish.name
+      .toLowerCase()
+      .includes(searchedItems.toLowerCase());    
+    function checkVeg(){
+      return dropDown==="veg"?true:false;
+    }
+    const filterMatches = dropDown === "all" || dish.isVeg === checkVeg();
     
-  //   return searchMatches && filterMatches;
-  // });
+    return searchMatches && filterMatches;
+  });
 
   const handleSearch = () => {
     searchedItems;
   };
+
   useEffect(()=>{
     fetchMenu();
   },[])
@@ -182,7 +178,7 @@ function Menu() {
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
           {dishes.map((dish) => (
             <div
-              key={dish.id}
+              key={dish._id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
             >
               <img
@@ -206,7 +202,7 @@ function Menu() {
                 </div>
                 <button
                   className="mt-4 w-full bg-orange-500 text-white py-1 text-xs md:text-[1rem] rounded hover:bg-orange-600"
-                  onClick={() => handleAddToCart(dish)}
+                  onClick={() => handleAddToCart(dish._id)}
                 >
                   Add to Cart
                 </button>
