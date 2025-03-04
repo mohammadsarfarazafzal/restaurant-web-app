@@ -10,8 +10,9 @@ function Menu() {
   const [dropDown, setDropDown] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
-
   const [dishes,setDishes]=useState([]);
+  
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +28,59 @@ function Menu() {
     }
   }
 
+
+  // const dishes = [
+  //   {
+  //     id: 1,
+  //     name: "Paneer Tikka 🧀",
+  //     img: "/Images/PaneerTikka.jpg",
+  //     price: 260,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Haka Noodles 🍜",
+  //     img: "Images/Noodels.jpg",
+  //     price: 150,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Italian Pizza 🍕",
+  //     img: "Images/Pizza.jpg",
+  //     price: 150,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Chinese Momo 🥟",
+  //     img: "Images/Momo.jpg",
+  //     price: 100,
+  //     food: "veg",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Kolkata Biryani",
+  //     img: "Images/Biryani.jpg",
+  //     price: 300,
+  //     food: "non-veg",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Burger",
+  //     img: "Images/Burger.jpg",
+  //     price: 50,
+  //     food: "non-veg",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Dosa",
+  //     img: "Images/Dosa.jpg",
+  //     price: 80,
+  //     food: "veg",
+  //   },
+  // ];
+
   const fetchMenu = async () =>{
       try {
         const res = await axios.get("http://localhost:8000/api/v1/menu/list");
@@ -34,6 +88,7 @@ function Menu() {
           console.log(res.data.data);
           setDishes(res.data.data);
         }
+        console.log(res);
       } catch (error) {
         alert("Error while fetching menu.")
       }
@@ -109,7 +164,7 @@ function Menu() {
         </div>
         {/* Menu's Section */}
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
-          {filterDishes.map((dish) => (
+          {dishes.map((dish) => (
             <div
               key={dish._id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
@@ -127,7 +182,7 @@ function Menu() {
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg?"🥗 Veg":"🍗 Non-Veg"}</p>
+                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg ? "Veg 🌱" : "Non-Veg 🍗"}</p>
                   <p className="text-sm md:text-lg font-semibold text-orange-500">
                     {"\u20B9"}
                     {dish.price}.00
