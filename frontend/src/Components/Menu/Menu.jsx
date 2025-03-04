@@ -7,10 +7,9 @@ import axios from 'axios';
 
 function Menu() {
   const [searchedItems, setSearchedItems] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [dropDown, setDropDown] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
-
   const [dishes,setDishes]=useState([]);
   
 
@@ -166,8 +165,8 @@ function Menu() {
           <span className="font-medium text-gray-700">Filter By:</span>
           <select
             className="border border-gray-300 rounded-md p-2"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            value={dropDown}
+            onChange={(e) => setDropDown(e.target.value)}
           >
             <option value="all">All</option>
             <option value="veg">Veg</option>
