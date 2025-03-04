@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify"
+import { useSelector,useDispatch } from 'react-redux'
+import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice"; 
 
 import {
   Card,
@@ -12,6 +14,8 @@ import {
 } from "@material-tailwind/react";
 
 const LoginForm = () => {
+  const token=useSelector((state)=>state.auth.token);
+  const dispatch=useDispatch()
   const [formdata, setFormData] = useState({
     email: "",
     password: "",
@@ -25,21 +29,31 @@ const LoginForm = () => {
     try {
       const res = await axios.post(
         "http://localhost:8000/api/v1/users/login",
-        formdata,
-        setFormData({
-          email: "",
-          password: "",
-          phoneNumber: "",
-        })
+        formdata, {withCredentials:true}
       );
+      
+      setFormData({
+        email: "",
+        password: "",
+        phoneNumber: "",
+      })
+      
       if(res.data.success){
-        navigate("/Menu")
+        dispatch(setToken(res.data.message.refreshToken));
       }
     } catch (error) {
-      console.log("Login Failed");
-      notify()
+      console.log("Login Failed", error.response?.data || error.message);
+      notify(error.response?.data?.message || "Login Failed");
     }
   };
+  
+  useEffect(() => {
+    if (token) {
+      navigate("/Menu");
+    }
+  }, [token, navigate]);
+
+
   return (
     <div className="flex justify-center items-center">
       <Card color="transparent" shadow={false}>
@@ -49,7 +63,7 @@ const LoginForm = () => {
         <Typography color="gray" className="mt-1 font-normal">
           Welcome back! Enter your details to login.
         </Typography>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+        <form onSubmit={(e)=>{e.preventDefault()}} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Your Email
@@ -117,7 +131,8 @@ const LoginForm = () => {
             containerProps={{ className: "-ml-2.5" }}
           />
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault(); // Prevent form submission
               login();
             }}
             className="mt-6"
@@ -128,12 +143,10 @@ const LoginForm = () => {
           <ToastContainer />
           <Typography color="gray" className="mt-4 text-center font-normal">
             Don't have an account?{" "}
-            {/* <a href="#" className="font-medium text-gray-900">
-              Sign In
-            </a> */}
             <button
               className="font-medium text-gray-900"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault(); // Prevent form submission
                 navigate("/SignUp");
               }}
             >

@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../StateManagement/Cart_Management/Features/authSlice";
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const token = useSelector((state)=>state.auth.token)
   const [isMenuClicked, setMenuClicked] = useState(false);
-  const [logIn, setLogIn] = useState(false);
 
   const handleMenuClicked = () => {
     setMenuClicked(!isMenuClicked);
@@ -12,6 +16,16 @@ function Navbar() {
     setMenuClicked(!isMenuClicked);
   }
 
+  const logOutUser = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
+      if(res.data.success){
+            dispatch(logout(res.data.message.refreshToken));
+            }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-8 py-4 shadow-lg">
@@ -57,24 +71,30 @@ function Navbar() {
         >
           Book Table
         </button></Link>
-        
-        
-        <Link to="/account">
-        <button
-          className={
-            `${logIn?"md:block":"none"} bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base`
+
+          {
+            token?(
+              <div>
+              <button
+                onClick={()=>logOutUser()}
+                className={
+                  "none md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+                }
+              >
+                Log Out
+              </button></div>
+            ):(
+              <div><Link to="/signup">
+              <button
+                className={
+                  "none md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+                }
+              >
+                Sign Up
+              </button></Link></div>
+            )
           }
-        >
-          Account
-        </button></Link>
-        <Link to="/signup">
-        <button
-          className={
-            `${logIn?"none":"md:block"} bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base`
-          }
-        >
-          Sign Up
-        </button></Link>
+
       </div>
 
       {/*MENU BUTTON FOR MOBILE */}
