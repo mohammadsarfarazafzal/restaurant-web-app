@@ -2,6 +2,7 @@ import React, { useState , useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
+import { toast,ToastContainer } from "react-toastify";
 import axios from 'axios';
 
 
@@ -16,6 +17,7 @@ function Menu() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const notify = (message) => {toast.success(message)}
 
   const handleAddToCart = async (item) => {
     try {
@@ -23,13 +25,22 @@ function Menu() {
         itemId:item
       }, {withCredentials:true})
       console.log(res);
+      dispatch(addToCart(item))
+      // notify(true,"Item added to cart")
+      setcheckOutButton(true);
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        
+      }, 5000);
+      
     } catch (error) {
       console.error(error);
     }
   }
 
 
-  // const dishes = [
+ 
   //   {
   //     id: 1,
   //     name: "Paneer Tikka 🧀",
@@ -193,7 +204,9 @@ function Menu() {
                   onClick={() => handleAddToCart(dish._id)}
                 >
                   Add to Cart
+                 
                 </button>
+                <ToastContainer/>
               </div>
             </div>
           ))}
