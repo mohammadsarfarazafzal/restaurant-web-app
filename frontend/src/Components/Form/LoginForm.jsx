@@ -39,7 +39,7 @@ const LoginForm = () => {
       })
       
       if(res.data.success){
-        dispatch(setToken(res.data.message.refreshToken));
+        dispatch(setToken(true));
       }
     } catch (error) {
       console.log("Login Failed", error.response?.data || error.message);

@@ -22,7 +22,7 @@ function Navbar() {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
-            dispatch(logout(res.data.message.refreshToken));
+            dispatch(logout(true));
             navigate("/SignUp");
             }
     } catch (error) {

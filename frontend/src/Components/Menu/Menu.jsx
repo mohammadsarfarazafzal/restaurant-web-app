@@ -1,108 +1,54 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-
+import axios from "axios";
 
 function Menu() {
   const [searchedItems, setSearchedItems] = useState("");
   const [dropDown, setDropDown] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
-  const [dishes,setDishes]=useState([]);
-  
-
+  const [dishes, setDishes] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleAddToCart = async (item) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
-        itemId:item
-      }, {withCredentials:true})
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/cart/add",
+        {
+          itemId: item,
+        },
+        { withCredentials: true }
+      );
       console.log(res);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-
-  // const dishes = [
-  //   {
-  //     id: 1,
-  //     name: "Paneer Tikka 🧀",
-  //     img: "/Images/PaneerTikka.jpg",
-  //     price: 260,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Haka Noodles 🍜",
-  //     img: "Images/Noodels.jpg",
-  //     price: 150,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Italian Pizza 🍕",
-  //     img: "Images/Pizza.jpg",
-  //     price: 150,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Chinese Momo 🥟",
-  //     img: "Images/Momo.jpg",
-  //     price: 100,
-  //     food: "veg",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Kolkata Biryani",
-  //     img: "Images/Biryani.jpg",
-  //     price: 300,
-  //     food: "non-veg",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Burger",
-  //     img: "Images/Burger.jpg",
-  //     price: 50,
-  //     food: "non-veg",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Dosa",
-  //     img: "Images/Dosa.jpg",
-  //     price: 80,
-  //     food: "veg",
-  //   },
-  // ];
-
-  const fetchMenu = async () =>{
-      try {
-        const res = await axios.get("http://localhost:8000/api/v1/menu/list");
-        if (res.data.success) {
-          console.log(res.data.data);
-          setDishes(res.data.data);
-        }
-        console.log(res);
-      } catch (error) {
-        alert("Error while fetching menu.")
+  const fetchMenu = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/v1/menu/list");
+      if (res.data.success) {
+        setDishes(res.data.data);
       }
-  } 
+    } catch (error) {
+      alert("Error while fetching menu.");
+    }
+  };
 
   const filterDishes = dishes.filter((dish) => {
     const searchMatches = dish.name
       .toLowerCase()
-      .includes(searchedItems.toLowerCase());    
-    function checkVeg(){
-      return dropDown==="veg"?true:false;
+      .includes(searchedItems.toLowerCase());
+    function checkVeg() {
+      return dropDown === "veg" ? true : false;
     }
     const filterMatches = dropDown === "all" || dish.isVeg === checkVeg();
-    
+
     return searchMatches && filterMatches;
   });
 
@@ -110,9 +56,9 @@ function Menu() {
     console.log(dishes);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMenu();
-  },[])
+  }, []);
   return (
     <div className="bg-gray-100">
       {/* Header */}
@@ -164,7 +110,7 @@ function Menu() {
         </div>
         {/* Menu's Section */}
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
-          {dishes.map((dish) => (
+          {filterDishes.map((dish) => (
             <div
               key={dish._id}
               className=" flex flex-row md:flex-col  bg-white shadow-lg rounded-lg overflow-hidden transform transition hover:scale-105"
@@ -175,14 +121,14 @@ function Menu() {
                 className=" w-32 md:w-full md:h-60 h-45 object-cover"
               />
 
-              
-
               <div className="p-4 flex  w-40 flex-col justify-between">
                 <div>
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">{dish.isVeg ? "Veg 🌱" : "Non-Veg 🍗"}</p>
+                  <p className="text-sm text-gray-500 mb-2">
+                    {dish.isVeg ? "Veg 🌱" : "Non-Veg 🍗"}
+                  </p>
                   <p className="text-sm md:text-lg font-semibold text-orange-500">
                     {"\u20B9"}
                     {dish.price}.00
@@ -211,11 +157,13 @@ function Menu() {
       {checkOutButton && (
         <div className="flex items-center justify-end">
           <div className="p-2 mr-4 bg-green-500 mb-2 rounded-lg text-white font-semibold w-40 text-center transition-transform hover:bg-green-600 scale-105">
-            <button 
-            onClick={()=>{
-              navigate("/Cart")
-            }}
-            className="text-center">Check Out
+            <button
+              onClick={() => {
+                navigate("/Cart");
+              }}
+              className="text-center"
+            >
+              Check Out
             </button>
           </div>
         </div>
