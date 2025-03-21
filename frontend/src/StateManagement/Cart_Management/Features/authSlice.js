@@ -1,51 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 
+// const getTokenFromApi=async () =>{
+//   try {
+//     const response=await axios.post("http://localhost:5000/api/refresh-token",{"name1":"ddd"},{withCredentials:true});
 
-//set token with expiry
+//     if(response.data?.accessToken){
+//       console.log("Aa gya token",response.data.accessToken);
+//       return response.data.accessToken;
+//     }
+//   } catch (error) {
+//     console.error("Error while fetching token",error);
+//     return null;
+//   }
+// }
 
-const setTokenWithExpiry=(token,expiryMinutes)=>{
-  const now =new Date();
-  const expiryTime=now.getTime()+expiryMinutes * 60 *1000;
+// // Get token from cookies
+// const getTokenFromCookies = () => {
+//   const token = Cookies.get("accessToken");
+//   console.log("TOKON  ",token);
+//   return token || null;
+// };
 
-  const tokenData={
-    value:token,
-    expiry:expiryTime,
-  }
-  localStorage.setItem("token",JSON.stringify(tokenData));
+
+let initialToken=null;
+async ()=>{
+  initialToken=await getTokenFromApi();
 };
-
-const getTokenFromStorage=()=>{
-  const tokenData =localStorage.getItem("token");
-  if(!tokenData){
-    return null;
-  }
-
-  const parsedToken=JSON.parse(tokenData);
-  const now=new Date();
-
-  //checking if token expired
-  if(now.getTime()>parsedToken.expiry){
-    localStorage.removeItem("token");
-    return null;
-  }
-  return parsedToken.value;
-}
 
 const initialState = {
-  token: getTokenFromStorage(),
+  token: initialToken,
 };
+
+
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;
-      setTokenWithExpiry(action.payload,1);
     },
-    logout: (state) => {
+    logout: (state,action) => {
       state.token = null;
-      localStorage.removeItem("token");
     },
   },
 });

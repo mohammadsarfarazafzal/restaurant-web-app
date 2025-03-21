@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 
 const LoginForm = () => {
-  const token=useSelector((state)=>state.auth.token);
+  // const token=useSelector((state)=>state.auth.token);
   const dispatch=useDispatch()
   const [formdata, setFormData] = useState({
     email: "",
@@ -40,6 +40,7 @@ const LoginForm = () => {
       
       if(res.data.success){
         dispatch(setToken(res.data.message.refreshToken));
+        navigate("/Menu")
       }
     } catch (error) {
       console.log("Login Failed", error.response?.data || error.message);
@@ -47,11 +48,11 @@ const LoginForm = () => {
     }
   };
   
-  useEffect(() => {
-    if (token) {
-      navigate("/Menu");
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate("/Menu");
+  //   }
+  // }, [token, navigate]);
 
 
   return (

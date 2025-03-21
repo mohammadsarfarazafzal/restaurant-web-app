@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
+import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice";
 import { logout } from "../../StateManagement/Cart_Management/Features/authSlice";
 
 
 function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state)=>state.auth.token)
+
+
   const [isMenuClicked, setMenuClicked] = useState(false);
   const navigate=useNavigate();
 
@@ -22,7 +25,7 @@ function Navbar() {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
-            dispatch(logout(res.data.message.refreshToken));
+            dispatch(logout());
             navigate("/SignUp");
             }
     } catch (error) {
