@@ -9,7 +9,6 @@ function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state)=>state.auth.token)
 
-  console.log(token);
   const [isMenuClicked, setMenuClicked] = useState(false);
   const navigate=useNavigate();
 
