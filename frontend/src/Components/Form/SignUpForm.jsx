@@ -38,7 +38,6 @@ const SignUpForm = () => {
               address: "",
               password: ""
             })
-            console.log(res);
             if(res.data.success){
               notify(true,"Thank You, Account Created Successfully!");
             setTimeout(()=>{

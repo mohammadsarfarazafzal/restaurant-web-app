@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
-import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice";
-import { logout } from "../../StateManagement/Cart_Management/Features/authSlice";
+import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
 
 
 function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state)=>state.auth.token)
 
-
+  console.log(token);
   const [isMenuClicked, setMenuClicked] = useState(false);
   const navigate=useNavigate();
 
@@ -21,17 +20,34 @@ function Navbar() {
     setMenuClicked(!isMenuClicked);
   }
 
+  const authentication = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/users/refresh",{},{withCredentials:true});
+      
+      if(res.data.success){
+        dispatch(setToken(true));
+      }
+    } catch (error) {
+      console.log(error.message || error);
+      dispatch(setToken(false));
+    }
+  }
+
   const logOutUser = async () => {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
-            dispatch(logout());
+            dispatch(setToken(false));
             navigate("/SignUp");
             }
     } catch (error) {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    authentication();
+  }, []);
 
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-8 py-4 shadow-lg">

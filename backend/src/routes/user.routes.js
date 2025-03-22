@@ -8,8 +8,8 @@ router.route("/register").post(registerUser);
 
 router.route("/login").post(logInUser);
 
-router.route("/logout").post(verifyJWT,logOutUser)
+router.route("/logout").post(verifyJWT,logOutUser);
 
-router.route("/refresh-token").post(verifyJWT,refreshAccessToken)
+router.route("/refresh").post(verifyJWT,refreshAccessToken);
 
 export default router;

@@ -117,7 +117,7 @@ const logOutUser = asyncHandler(async (req, res) => {
 
 //refreshAccessToken
 const refreshAccessToken = asyncHandler(async (req, res) => {
-  const incomingRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken ||req.user?.refreshToken;
+  const incomingRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken || req.user?.refreshToken;
   console.log("Received refresh token:", incomingRefreshToken);
 
   try {
@@ -151,19 +151,19 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     };
 
-    const { accessToken, newRefreshToken } = await generateTokens(user);
-    console.log("generated: ",accessToken, newRefreshToken);
+    const { accessToken, refreshToken } = await generateTokens(user);
+    console.log("generated: ",accessToken, refreshToken);
     
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newRefreshToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json(
         new ApiResponse(
           200,
           {
             accessToken,
-            refreshToken: newRefreshToken,
+            refreshToken
           },
           "Access token refreshed successfully"
         )
