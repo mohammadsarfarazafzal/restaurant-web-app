@@ -133,7 +133,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     console.log("token decoded", decodedToken);
     
-
     const user = await User.findById(decodedToken?._id);
 
     console.log("user found", user);
@@ -152,19 +151,19 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     };
 
-    const { accessToken, newRefreshToken } = await generateTokens(user);
-    console.log("generated: ",accessToken, newRefreshToken);
+    const { accessToken, refreshToken } = await generateTokens(user);
+    console.log("generated: ",accessToken, refreshToken);
     
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newRefreshToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json(
         new ApiResponse(
           200,
           {
             accessToken,
-            refreshToken: newRefreshToken,
+            refreshToken
           },
           "Access token refreshed successfully"
         )

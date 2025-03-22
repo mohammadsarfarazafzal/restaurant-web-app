@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
-import Cookies from 'js-cookie';
+import { useSelector, useDispatch } from "react-redux";
+import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
 
 
 function Navbar() {
-  const [token, setToken] = useState(true);
+  const dispatch = useDispatch();
+  const token = useSelector((state)=>state.auth.token)
+
+  console.log(token);
   const [isMenuClicked, setMenuClicked] = useState(false);
   const navigate=useNavigate();
 
@@ -19,15 +23,13 @@ function Navbar() {
   const authentication = async () => {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/refresh",{},{withCredentials:true});
-      console.log(res);
       
       if(res.data.success){
-        setToken(true);
+        dispatch(setToken(true));
       }
     } catch (error) {
-      setToken(false);
-      console.log(error);
-      
+      console.log(error.message || error);
+      dispatch(setToken(false));
     }
   }
 
@@ -35,6 +37,7 @@ function Navbar() {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
+            dispatch(setToken(false));
             navigate("/SignUp");
             }
     } catch (error) {

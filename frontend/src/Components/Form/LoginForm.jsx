@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify"
+import { useSelector, useDispatch } from "react-redux";
+import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
 
 import {
   Card,
@@ -12,6 +14,8 @@ import {
 } from "@material-tailwind/react";
 
 const LoginForm = () => {
+  const token = useSelector((state)=>state.auth.token);
+  const dispatch=useDispatch()
   const [formdata, setFormData] = useState({
     email: "",
     password: "",
@@ -35,6 +39,7 @@ const LoginForm = () => {
       })
       
       if(res.data.success){
+        dispatch(setToken(true));
         navigate("/Menu")
       }
 
@@ -43,7 +48,6 @@ const LoginForm = () => {
       notify(error.response?.data?.message || "Login Failed");
     }
   };
-
 
   return (
     <div className="flex justify-center items-center">
