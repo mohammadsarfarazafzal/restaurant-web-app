@@ -118,11 +118,11 @@ const logOutUser = asyncHandler(async (req, res) => {
 //refreshAccessToken
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken || req.user?.refreshToken;
-  console.log("Received refresh token:", incomingRefreshToken);
+  // console.log("Received refresh token:", incomingRefreshToken);
 
   try {
     if (!incomingRefreshToken) {
-      console.log("No refresh token provided");
+      // console.log("No refresh token provided");
       throw new ApiError(401, "Unauthorized request");
     }
 
@@ -131,11 +131,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET
     );
 
-    console.log("token decoded", decodedToken);
+    // console.log("token decoded", decodedToken);
     
     const user = await User.findById(decodedToken?._id);
 
-    console.log("user found", user);
+    // console.log("user found", user);
 
     if (!user) {
       console.log("User not found for ID:", decodedToken?._id);
@@ -152,7 +152,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     };
 
     const { accessToken, refreshToken } = await generateTokens(user);
-    console.log("generated: ",accessToken, refreshToken);
+    // console.log("generated: ",accessToken, refreshToken);
     
     return res
       .status(200)
@@ -200,7 +200,10 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
+const authenticate = asyncHandler((req, res) => {
+  return res.status(200).json(
+      new ApiResponse(200, "User is LoggedIn"));
+});
 
 
-
-export { registerUser, logInUser, logOutUser, refreshAccessToken };
+export { registerUser, logInUser, logOutUser, authenticate };
