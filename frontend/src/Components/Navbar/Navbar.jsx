@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../StateManagement/Cart_Management/Features/authSlice";
+import Cookies from 'js-cookie';
 
 
 function Navbar() {
-  const dispatch = useDispatch();
-  const token = useSelector((state)=>state.auth.token)
+  const [token, setToken] = useState(true);
   const [isMenuClicked, setMenuClicked] = useState(false);
   const navigate=useNavigate();
 
@@ -18,17 +16,35 @@ function Navbar() {
     setMenuClicked(!isMenuClicked);
   }
 
+  const authentication = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/users/refresh",{},{withCredentials:true});
+      console.log(res);
+      
+      if(res.data.success){
+        setToken(true);
+      }
+    } catch (error) {
+      setToken(false);
+      console.log(error);
+      
+    }
+  }
+
   const logOutUser = async () => {
     try {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
-            dispatch(logout(true));
             navigate("/SignUp");
             }
     } catch (error) {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    authentication();
+  }, []);
 
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-8 py-4 shadow-lg">

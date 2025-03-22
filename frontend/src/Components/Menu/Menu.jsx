@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../StateManagement/Cart_Management/Features/cartslice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 function Menu() {
   const [searchedItems, setSearchedItems] = useState("");
   const [dropDown, setDropDown] = useState("all");
-  const [showPopup, setShowPopup] = useState(false);
   const [checkOutButton, setcheckOutButton] = useState(false);
   const [dishes, setDishes] = useState([]);
-
-  const dispatch = useDispatch();
+  const notify = (message) => {toast.success(message)}
   const navigate = useNavigate();
 
   const handleAddToCart = async (item) => {
@@ -23,7 +20,8 @@ function Menu() {
         },
         { withCredentials: true }
       );
-      console.log(res);
+      notify("Item Added to Cart")
+      setcheckOutButton(true);
     } catch (error) {
       console.error(error);
     }
@@ -143,15 +141,9 @@ function Menu() {
               </div>
             </div>
           ))}
+          <ToastContainer />
         </div>
       </section>
-
-      {/* Pop-up Notification */}
-      {showPopup && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg transition-opacity duration-300">
-          Item added to cart! 🛒
-        </div>
-      )}
 
       {/* show checkout */}
       {checkOutButton && (

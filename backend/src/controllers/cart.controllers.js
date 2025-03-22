@@ -56,8 +56,10 @@ const removeFromCart = asyncHandler(async (req, res) => {
 // fetch cart
 const getCartData = asyncHandler(async(req, res)=>{
     try {
+        console.log("in getCartData");
         const cartData = await req.user?.cartData;
-
+        console.log(cartData);
+        
         if(!cartData){
             throw new ApiError("Cart Not Found", 401);
         }

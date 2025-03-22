@@ -1,38 +1,37 @@
-import React from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Cart() {
+  const [cartItems, setCartItems] = useState({});
 
-    const cartItems=useSelector((state)=>state.cart.cartItems);
-    const dispatch=useDispatch()
-    // console.log(cartItems)
-    
+  const showCart = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/v1/cart/all", {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        setCartItems(res.data.data);
+      }
+      console.log(cartItems);
+      
+    } catch (error) {
+      console.log(error?.message || "Error fetching cart items");
+    }
+  };
+
+  useEffect(() => {
+    showCart();
+  }, []);
+
   return (
-    <div className=''>
-        <h2>Your Cart</h2>
-        {
-            
-            cartItems.length===0 ?(
-                <p>Cart is empty..</p>
-            ):(
-                <>
-                {cartItems.map((dish)=>(
-                    <div key={dish.id}>
-                        <img src={dish.img} alt={dish.name} />
-                        <h2>{dish.name}</h2>
-                        <p>{dish.price * dish.quantity}</p>
-                        {console.log(typeof(dish.price*dish.quantity))}
-                        <button onClick={()=>{
-                            dispatch(removeFromCart(dish.id))
-                        }}>Remove</button>
-                    </div>
-                ))}
-                <button onClick={() => dispatch(clearCart())}>Clear Cart</button>
-                </>
-            )
-        }
+    <div>
+      <div className="bg-white rounded-lg shadow p-6">
+        <h1 className="text-2xl font-bold text-orange-600 mb-6">Your Cart</h1>
+        <div className="grid gap-4">
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;

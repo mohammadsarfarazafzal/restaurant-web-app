@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify"
-import { useSelector,useDispatch } from 'react-redux'
-import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice"; 
 
 import {
   Card,
@@ -14,8 +12,6 @@ import {
 } from "@material-tailwind/react";
 
 const LoginForm = () => {
-  const token=useSelector((state)=>state.auth.token);
-  const dispatch=useDispatch()
   const [formdata, setFormData] = useState({
     email: "",
     password: "",
@@ -39,19 +35,14 @@ const LoginForm = () => {
       })
       
       if(res.data.success){
-        dispatch(setToken(true));
+        navigate("/Menu")
       }
+
     } catch (error) {
       console.log("Login Failed", error.response?.data || error.message);
       notify(error.response?.data?.message || "Login Failed");
     }
   };
-  
-  useEffect(() => {
-    if (token) {
-      navigate("/Menu");
-    }
-  }, [token, navigate]);
 
 
   return (
