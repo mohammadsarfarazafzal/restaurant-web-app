@@ -25,7 +25,7 @@ const addToCart = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, "Item added to cart"))
     } catch (error) {
-        throw new ApiError(401, "Error in Adding To Cart", error.messsage);
+        throw new ApiError(401, "Error in Adding To Cart");
     }
 })
 
@@ -46,28 +46,31 @@ const removeFromCart = asyncHandler(async (req, res) => {
 
         res.
         status(200).
-        json(new ApiResponse("Item removed from cart", 200));
+        json(new ApiResponse(200,"Item removed from cart"));
 
     } catch (error) {
-        throw new ApiError(401, "Error in Removing From Cart", error.messsage);
+        throw new ApiError(401, "Error in Removing From Cart");
     }
 })
 
 // fetch cart
 const getCartData = asyncHandler(async(req, res)=>{
     try {
-        console.log("in getCartData");
-        const cartData = await req.user?.cartData;
-        console.log(cartData);
-        
-        if(!cartData){
-            throw new ApiError("Cart Not Found", 401);
-        }
 
-        res.status(200).json(new ApiResponse(200, "Showing all Cart Items", cartData));
+        const cartData = await req.user?.cartData;
+        if(!cartData){
+            throw new ApiError("Cart Data not Found", 401);
+        }
+        const cartItems = await Promise.all(Object.keys(cartData).map(
+            async (key, index)=>{
+                return await Menu.findById(key);
+            }
+        ))
+
+        res.status(200).json(new ApiResponse(200, {cartItems, cartData}, "Showing all Cart Items"));
 
     } catch (error) {
-        throw new ApiError(401, "Error in Fetching Cart Details", error.messsage);
+        throw new ApiError(401, "Error in Fetching Cart Details");
     }
 })
 

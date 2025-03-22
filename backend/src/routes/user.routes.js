@@ -1,7 +1,6 @@
 import { Router } from "express"
-import { logInUser, logOutUser, registerUser } from "../controllers/user.controllers.js"
+import { logInUser, logOutUser, registerUser, authenticate } from "../controllers/user.controllers.js"
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
 
 const router = Router();
 
@@ -11,9 +10,6 @@ router.route("/login").post(logInUser);
 
 router.route("/logout").post(verifyJWT, logOutUser);
 
-router.route("/auth").post(verifyJWT, (req, res) => {
-    return res.status(200).json(
-        new ApiResponse(200, "User is LoggedIn"));
-});
+router.route("/auth").post(verifyJWT, authenticate);
 
 export default router;
