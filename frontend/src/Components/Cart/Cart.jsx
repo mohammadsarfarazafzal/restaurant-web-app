@@ -45,7 +45,7 @@ function Cart() {
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-orange-600 font-semibold">₹{item.price}</span>
                     <span className="text-sm text-gray-500">
-                      {cartData[item._id]}
+                      Count: {cartData[item._id]}
                     </span>
                     <span className={`px-2 py-1 rounded text-sm ${
                       item.isVeg ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
