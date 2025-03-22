@@ -26,9 +26,13 @@ app.use("/api/v1/users", userRouter)
 
 // cart router
 import cartRouter from "./routes/cart.routes.js"
-
 app.use("/api/v1/cart", cartRouter)
 
+//menu router
 import menuRouter from "./routes/menu.routes.js"
 app.use("/api/v1/menu",menuRouter)
+
+//booking route
+import bookingRouter from "./routes/bookTable.routes.js"
+app.use("/api/v1/tableBooking",bookingRouter)
 export {app}

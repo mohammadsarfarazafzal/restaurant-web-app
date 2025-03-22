@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const TableBookingSchema = new mongoose.Schema(
   {
@@ -8,13 +8,8 @@ const TableBookingSchema = new mongoose.Schema(
       required: true,
     },
     guests: { type: Number, required: true },
-    // date: { type: Date, required: true },
-    // time: { type: String, required: true },
-    status: {
-      type: String,
-      enum: ["Pending", "Confirmed", "Cancelled"],
-      default: "Pending",
-    },
+    date: { type: Date, required: true },
+    time: { type: String, required: true },
   },
   { timestamps: true }
 );
