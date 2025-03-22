@@ -11,7 +11,7 @@ router.route("/login").post(logInUser);
 
 router.route("/logout").post(verifyJWT, logOutUser);
 
-router.route("/refresh").post(verifyJWT, (req, res) => {
+router.route("/auth").post(verifyJWT, (req, res) => {
     return res.status(200).json(
         new ApiResponse(200, "User is LoggedIn"));
 });

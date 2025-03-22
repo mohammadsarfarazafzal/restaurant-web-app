@@ -21,7 +21,7 @@ function Navbar() {
 
   const authentication = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/refresh",{},{withCredentials:true});
+      const res = await axios.post("http://localhost:8000/api/v1/users/auth",{},{withCredentials:true});
       
       if(res.data.success){
         dispatch(setToken(true));
