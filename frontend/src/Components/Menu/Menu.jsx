@@ -119,7 +119,7 @@ function Menu() {
                 className=" w-32 md:w-full md:h-60 h-45 object-cover"
               />
 
-              <div className="p-4 flex  w-40 flex-col justify-between">
+              <div className="p-4 flex flex-col justify-between">
                 <div>
                   <h3 className="text-sm md:text-base font-semibold text-gray-800">
                     {dish.name}
@@ -133,11 +133,12 @@ function Menu() {
                   </p>
                 </div>
                 <button
-                  className="mt-4 w-full bg-orange-500 text-white py-1 text-xs md:text-[1rem] rounded hover:bg-orange-600"
+                  className="mt-4 w-fit p-2 bg-orange-500 text-white text-xs md:text-[1rem] rounded hover:bg-orange-600"
                   onClick={() => handleAddToCart(dish._id)}
                 >
                   Add to Cart
                 </button>
+                
               </div>
             </div>
           ))}
@@ -148,15 +149,10 @@ function Menu() {
       {/* show checkout */}
       {checkOutButton && (
         <div className="flex items-center justify-end">
-          <div className="p-2 mr-4 bg-green-500 mb-2 rounded-lg text-white font-semibold w-40 text-center transition-transform hover:bg-green-600 scale-105">
-            <button
-              onClick={() => {
+          <div onClick={() => {
                 navigate("/Cart");
-              }}
-              className="text-center"
-            >
+              }} className="cursor-pointer p-2 mr-4 bg-green-500 mb-2 rounded-lg text-white font-semibold w-40 text-center transition-transform hover:bg-green-600 scale-105">
               Check Out
-            </button>
           </div>
         </div>
       )}

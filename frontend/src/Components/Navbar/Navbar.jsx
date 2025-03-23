@@ -83,6 +83,15 @@ function Navbar() {
             </li>
           </Link>
         </ul>
+        <Link to="/cart">
+        <button
+          className={
+            "hidden md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+          }
+        >
+          Cart
+        </button></Link>
+
         {/* Table booking button */}
         <Link to="/booktable">
         <button

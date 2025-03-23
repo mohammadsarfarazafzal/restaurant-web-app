@@ -29,6 +29,31 @@ const addToCart = asyncHandler(async (req, res) => {
     }
 })
 
+// delete from cart
+
+const deleteFromCart = asyncHandler(async (req, res) => {
+    try {
+        const cartData = await req.user?.cartData;
+        const itemId = req.body.itemId;
+        if(!cartData){
+            throw new ApiError("Cart Not Found", 401);
+        }
+
+        if(cartData[itemId]>0){
+            delete cartData[itemId];
+        }
+
+        await User.findByIdAndUpdate(req.user._id, {cartData});
+
+        res.
+        status(200).
+        json(new ApiResponse(200,"Item deleted from cart"));
+
+    } catch (error) {
+        throw new ApiError(401, "Error in Removing From Cart");
+    }
+})
+
 // remove from cart
 const removeFromCart = asyncHandler(async (req, res) => {
     try {
@@ -74,4 +99,4 @@ const getCartData = asyncHandler(async(req, res)=>{
     }
 })
 
-export {addToCart, removeFromCart, getCartData}
+export {addToCart, removeFromCart, getCartData, deleteFromCart}

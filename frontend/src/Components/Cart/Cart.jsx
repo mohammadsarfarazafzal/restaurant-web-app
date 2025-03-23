@@ -20,6 +20,39 @@ function Cart() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/cart/delete", {"itemId": id}, {withCredentials:true})
+      fetchCart();
+    } catch (error) {
+      console.log(error?.message || "Error deleting cart item");
+    }
+  }
+
+  const addToCart = async (id) => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/cart/add",{
+        "itemId":id
+      }, {withCredentials: true});
+      fetchCart();
+      console.log(res);
+    } catch (error) {
+      console.log(error?.message || "Error adding to cart");
+    }
+  }
+
+  const removeFromCart = async (id) => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/v1/cart/remove",{
+        "itemId":id
+      }, {withCredentials: true});
+      fetchCart();
+      console.log(res);
+    } catch (error) {
+      console.log(error?.message || "Error removing from cart");
+    }
+  }
+
   useEffect(() => {
     fetchCart();
   }, []);
@@ -30,44 +63,59 @@ function Cart() {
         <h1 className="text-2xl font-bold text-orange-600 mb-6">Your Cart</h1>
         <div className="grid gap-4">
         {
-            cartItems.map((item) => (
-              <div key={item._id} className="border p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                {/* Left Section - Image */}
-                <img 
-                  src={item.image} 
-                  alt={item.name} 
-                  className="w-24 h-24 object-cover rounded-lg"
-                />
-    
-                {/* Middle Section - Details */}
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg">{item.name}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-orange-600 font-semibold">₹{item.price}</span>
-                    <span className="text-sm text-gray-500">
-                      Count: {cartData[item._id]}
-                    </span>
-                    <span className={`px-2 py-1 rounded text-sm ${
-                      item.isVeg ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {item.isVeg ? 'Veg' : 'Non-Veg'}
-                    </span>
-                  </div>
+          cartItems.length>0? cartItems.map((item) => (
+            <div key={item._id} className="border p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              {/* Left Section - Image */}
+              <img 
+                src={item.image} 
+                alt={item.name} 
+                className="w-24 h-24 object-cover rounded-lg"
+              />
+  
+              {/* Middle Section - Details */}
+              <div className="flex-1">
+                <h3 className="font-bold text-lg">{item.name}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-orange-600 font-semibold">₹{item.price}</span>
+                  <span className={`px-2 py-1 rounded text-sm ${
+                    item.isVeg ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {item.isVeg ? 'Veg' : 'Non-Veg'}
+                  </span>
                 </div>
-    
-                {/* Right Section - Delete Button */}
-                <button
-                  onClick={() => {
-                    console.log(item._id)
-                    handleDelete(item._id)
-                  }}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 self-end sm:self-auto"
-                >
-                  Delete
-                </button>
               </div>
-            ))
-          }
+  
+              {/* Right Section - Delete Button */}
+              <button
+                onClick={() => {
+                  removeFromCart(item._id)
+                }}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 self-end sm:self-auto"
+              >
+                -
+              </button>
+              <span className="text-sm text-gray-500">
+                    Count: {cartData[item._id]}
+                  </span>
+                  <button
+                onClick={() => {
+                  addToCart(item._id)
+                }}
+                className="bg-green-500 text-white px-3 py-1 rounded hover:bg-red-600 self-end sm:self-auto"
+              >
+                +
+              </button>
+              <button
+                onClick={() => {
+                  handleDelete(item._id)
+                }}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 self-end sm:self-auto"
+              >
+                Delete
+              </button>
+            </div>
+          )): <div>Your Cart is Empty</div>
+        }
         </div>
       </div>
     </div>
