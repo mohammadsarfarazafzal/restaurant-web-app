@@ -6,6 +6,6 @@ const router=Router()
 
 router.route("/add-booking").post(verifyJWT,bookTable)
 router.route("/cancel-booking").post(verifyJWT,cancelTableBooking)
-router.route("/list-booking").get(listTableBooking)
+router.route("/list-booking").get(verifyJWT,listTableBooking)
 
 export default router;
