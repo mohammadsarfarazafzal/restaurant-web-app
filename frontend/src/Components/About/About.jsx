@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function About() {
   return (
@@ -81,9 +82,10 @@ function About() {
           Discover a world of flavors and hospitality at Spicy Touch. Book a table or
           visit us today!
         </p>
+        <Link to="/booktable">
         <button className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-orange-600 transition-transform transform hover:scale-105">
           Book a Table
-        </button>
+        </button></Link>
       </div>
     </div>
   );

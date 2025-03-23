@@ -18,6 +18,19 @@ function Navbar() {
   const handleMenuItemsClicked=()=>{
     setMenuClicked(!isMenuClicked);
   }
+  // const [cartItems, setCartItems] = useState([]);
+  // const fetchCart = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:8000/api/v1/cart/all", {
+  //       withCredentials: true,
+  //     });
+  //     if (res.data.success) {
+  //       setCartItems(res.data.data.cartItems);
+  //     }
+  //   } catch (error) {
+  //     console.log(error?.message || "Error fetching cart items");
+  //   }
+  // };
 
   const authentication = async () => {
     try {
@@ -46,7 +59,8 @@ function Navbar() {
 
   useEffect(() => {
     authentication();
-  }, []);
+    // fetchCart();
+  },[]);
 
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-8 py-4 shadow-lg">
@@ -89,7 +103,7 @@ function Navbar() {
             "hidden md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
           }
         >
-          Cart
+          Cart {/* {cartItems.length} */}
         </button></Link>
 
         {/* Table booking button */}
