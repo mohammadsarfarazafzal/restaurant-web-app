@@ -35,7 +35,7 @@ function Services() {
           },
     ]
   return (
-    <div className='bg-gray-100 min-h-screen py-8'>
+    <div className='bg-gray-100 min-h-screen'>
         <div className='bg-gray-900 text-white text-center py-5 md:py-10 px-4'>
             <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-t from-orange-500 to-yellow-500  bg-clip-text text-transparent'>
                 Our Services

@@ -20,7 +20,7 @@ function Menu() {
         },
         { withCredentials: true }
       );
-      notify("Item Added to Cart")
+      notify("Item Added to Cart. Go to Cart.")
       setcheckOutButton(true);
     } catch (error) {
       console.error(error);
@@ -94,7 +94,8 @@ function Menu() {
           </button>
         </div>
         {/* Filter selection */}
-        <div className="mb-4 flex justify-between md:justify-center items-center">
+        <div className="mb-4 flex justify-between items-center">
+          <div>
           <span className="font-medium text-gray-700">Filter By:</span>
           <select
             className="border border-gray-300 rounded-md p-2"
@@ -105,6 +106,17 @@ function Menu() {
             <option value="veg">Veg</option>
             <option value="non-veg">Non-veg</option>
           </select>
+          </div>
+          {/* show checkout */}
+          {checkOutButton && (
+            <div className="flex items-center justify-end">
+              <div onClick={() => {
+                    navigate("/Cart");
+                  }} className="cursor-pointer p-2 mr-4 bg-green-500 mb-2 rounded-lg text-white font-semibold w-40 text-center transition-transform hover:bg-green-600 scale-105">
+                  Check Out
+              </div>
+            </div>
+          )}
         </div>
         {/* Menu's Section */}
         <div className="space-y-4 md:grid  md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-y-0">
@@ -142,20 +154,11 @@ function Menu() {
               </div>
             </div>
           ))}
-          <ToastContainer />
+          <ToastContainer onClick={() => {
+                    navigate("/Cart");
+                  }} className="cursor-pointer" />
         </div>
       </section>
-
-      {/* show checkout */}
-      {checkOutButton && (
-        <div className="flex items-center justify-end">
-          <div onClick={() => {
-                navigate("/Cart");
-              }} className="cursor-pointer p-2 mr-4 bg-green-500 mb-2 rounded-lg text-white font-semibold w-40 text-center transition-transform hover:bg-green-600 scale-105">
-              Check Out
-          </div>
-        </div>
-      )}
     </div>
   );
 }
