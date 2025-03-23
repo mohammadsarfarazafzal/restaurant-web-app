@@ -142,11 +142,15 @@ function Cart() {
         <>
           {cartItems.map((item, index) => (
             <div key={item._id} className="px-4 py-1 flex justify-between">
-              <div>{item.name}</div>
+              {cartData[item._id]>0?(
+                <>
+                <div>{item.name}</div>
               <div>
                 ₹{item.price} x {cartData[item._id]} = ₹
                 {item.price * cartData[item._id]}
               </div>
+                </>
+                ):(<></>)}
             </div>
           ))}
 

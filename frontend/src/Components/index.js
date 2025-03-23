@@ -10,5 +10,7 @@ import Cart from "./Cart/Cart"
 import SignUpForm from "./Form/SignUpForm"
 import LoginForm from "./Form/LoginForm"
 import ViewBooking from "./ViewBooking.jsx/ViewBooking"
+import Orders from "./Orders/Orders"
+import Help from "./Help/Help"
 
-export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm,ViewBooking}
+export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm,ViewBooking, Orders, Help}

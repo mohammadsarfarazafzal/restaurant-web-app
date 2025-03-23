@@ -3,7 +3,52 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux";
 import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography,
+} from "@material-tailwind/react";
+import {
+  ShoppingBagIcon,
+  TableCellsIcon,
+  LifebuoyIcon,
+  PowerIcon,
+  ShoppingCartIcon,
+} from "@heroicons/react/24/solid";
 
+
+
+// profile menu component
+const profileMenuItems = [
+  {
+    label: "Cart",
+    icon: ShoppingCartIcon,
+    path: "/cart"
+  },
+  {
+    label: "Orders",
+    icon: ShoppingBagIcon,
+    path: "/orders"
+  },
+  {
+    label: "Tables",
+    icon: TableCellsIcon,
+    path: "/BookedTable"
+  },
+  {
+    label: "Help",
+    icon: LifebuoyIcon,
+    path: "/help"
+  },
+  {
+    label: "Sign Out",
+    icon: PowerIcon,
+  },
+];
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -18,6 +63,10 @@ function Navbar() {
   const handleMenuItemsClicked=()=>{
     setMenuClicked(!isMenuClicked);
   }
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  //const closeMenu = () => setIsMenuOpen(false);
+
   // const [cartItems, setCartItems] = useState([]);
   // const fetchCart = async () => {
   //   try {
@@ -85,7 +134,7 @@ function Navbar() {
           </Link>
           <Link to="/services">
             <li className="hover:text-orange-500 cursor-pointer py-2">
-              Service
+              Services
             </li>
           </Link>
           <Link to="/menu">
@@ -97,14 +146,6 @@ function Navbar() {
             </li>
           </Link>
         </ul>
-        <Link to="/cart">
-        <button
-          className={
-            "hidden md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
-          }
-        >
-          Cart {/* {cartItems.length} */}
-        </button></Link>
 
         {/* Table booking button */}
         <Link to="/booktable">
@@ -118,15 +159,65 @@ function Navbar() {
 
           {
             token?(
-              <div>
-              <button
-                onClick={()=>logOutUser()}
-                className={
-                  "none md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
-                }
+              // <div>
+              // <button
+              //   onClick={()=>logOutUser()}
+              //   className={
+              //     "none md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
+              //   }
+              // >
+              //   Log Out
+              // </button></div>
+              <>
+              <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+      <MenuHandler>
+        <Button
+          variant="text"
+          color="orange"
+          className="flex items-center rounded-full p-0"
+        >
+          <Avatar
+            variant="circular"
+            size="md"
+            alt="U"
+            withBorder={true}
+            color="orange"
+            className=" p-0.5"
+            src="https://res.cloudinary.com/dfyvwp2dx/image/upload/v1742738713/pfp_qzlpbm.jpg"
+          />
+        </Button>
+      </MenuHandler>
+      <MenuList className="p-1">
+        {profileMenuItems.map(({ label, icon, path }, key) => {
+          const isLastItem = key === profileMenuItems.length - 1;
+          return (
+            <MenuItem
+              key={label}
+              onClick={()=>{isLastItem?logOutUser():navigate(path)}}
+              className={`flex items-center gap-2 rounded ${
+                isLastItem
+                  ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                  : "hover:bg-orange-500 focus:bg-orange-100 active:bg-orange-100"
+              }`}
+            >
+              {React.createElement(icon, {
+                className: `h-4 w-4 ${isLastItem ? "text-red-500" : "text-orange-500"}`,
+                strokeWidth: 2,
+              })}
+              <Typography
+                as="span"
+                variant="small"
+                className="font-normal"
+                color={isLastItem ? "red" : "orange"}
               >
-                Log Out
-              </button></div>
+                {label}
+              </Typography>
+            </MenuItem>
+          );
+        })}
+      </MenuList>
+    </Menu>
+              </>
             ):(
               <div><Link to="/signup">
               <button
