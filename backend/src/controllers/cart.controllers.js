@@ -68,7 +68,6 @@ const removeFromCart = asyncHandler(async (req, res) => {
         }
 
         await User.findByIdAndUpdate(req.user._id, {cartData});
-
         res.
         status(200).
         json(new ApiResponse(200,"Item removed from cart"));

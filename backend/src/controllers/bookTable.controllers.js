@@ -23,9 +23,6 @@ const bookTable = asyncHandler(async (req, res) => {
     if (!newTableBooking) {
       throw new ApiError(500, "Failed to book your table.");
     }
-
-    console.log(res);
-
     return res
       .status(200)
       .json(new ApiResponse(200, newTableBooking, "Table booked successfully"));
@@ -36,18 +33,13 @@ const bookTable = asyncHandler(async (req, res) => {
 
 //cancel the booked table
 const cancelTableBooking = asyncHandler(async (req, res) => {
- const bookingId = req.body.bookingId;
-  console.log(bookingId);
-
+  const bookingId = req.body.bookingId;
   const find = await TableBooking.findById(bookingId);
-  console.log("user milaaaaaaa..", find);
-
   const cancelBooking = await TableBooking.findByIdAndDelete(bookingId);
-
+  
   if (!cancelBooking) {
     throw new ApiError(404, "Error while cancelling the booking.");
   }
-
   return res
     .status(200)
     .json(
@@ -55,30 +47,32 @@ const cancelTableBooking = asyncHandler(async (req, res) => {
     );
 });
 
-//List of all booking :Note it should be displayed in the admin's website
+//List of all booking :Note it should be displayed in the user 
 const listTableBooking = asyncHandler(async (req, res) => {
-    const userId = req.user?.id;
-    const userEmail = req.user?.email; // checking that he is admin by his email
-    let bookings;
-  
-    if (userEmail === "admin@gmail.com") {
-      //if he is admin
-      bookings = await TableBooking.find({}).populate("user");
-    } else {
-      //normal user
-      bookings = await TableBooking.find({
-        user: new ObjectId(userId),
-      }).populate("user");
-    }
-  
-    if (bookings.length === 0) {
-      throw new ApiError(404, "Error while fetching the bookings");
-    }
-  
-    return res
-      .status(200)
-      .json(new ApiResponse(200, bookings, "Bookings listed successfully"));
-  });
-  
+  const userId = req.user?.id;
+  const bookings = await TableBooking.find({
+    user: new ObjectId(userId),
+  }).populate("user");
 
-export { bookTable, cancelTableBooking, listTableBooking };
+  if (bookings.length === 0) {
+    throw new ApiError(404, "Error while fetching the bookings");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, bookings, "Bookings listed successfully"));
+
+});
+
+//List of all booking for the admin
+const listTableBookingForAdmin=asyncHandler(async(req,res)=>{
+  const bookingsAdmin=await TableBooking.find({}).populate("user");
+  console.log(bookingsAdmin);
+  if(bookingsAdmin.length===0){
+    throw new ApiError(404,"Error while fetching bookings");
+  }
+  return res
+  .status(200)
+  .json(new ApiResponse(200,bookingsAdmin,"Bookings listed successfully for admin"));
+})
+
+export { bookTable, cancelTableBooking, listTableBooking,listTableBookingForAdmin };
