@@ -57,41 +57,29 @@ const cancelTableBooking = asyncHandler(async (req, res) => {
 
 //List of all booking :Note it should be displayed in the admin's website
 const listTableBooking = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
-  // console.log(userId)
-  const bookings = await TableBooking.find({
-    user: new ObjectId(userId),
-  }).populate("user");
-
-  if (bookings.length === 0) {
-    throw new ApiError(404, "Error while fetching the bookings");
-  }
-  return res
-    .status(200)
-    .json(new ApiResponse(200, bookings, "Bookings listed successfully"));
-
-  // try {
-  //     const userId=req.user.id;
-  //     const role=req.user.role;
-
-  //     let bookings;
-  //     if(role==="admin"){
-  //         bookings=await TableBooking.find({})."populate(user");
-  //     }
-  //     else{
-  //         bookings=await TableBooking.find({user:userId});
-  //     }
-  //     return res.status(200).json(new ApiResponse(200,bookings,"Bookings listed successfully"))
-
-  // } catch (error) {
-  //     res
-  //     .status(500)
-  //     .json({
-  //         success:false,
-  //         message:"Error fetching booking"
-  //     })
-  // }
-});
+    const userId = req.user?.id;
+    const userEmail = req.user?.email; // checking that he is admin by his email
+    let bookings;
+  
+    if (userEmail === "admin@gmail.com") {
+      //if he is admin
+      bookings = await TableBooking.find({}).populate("user");
+    } else {
+      //normal user
+      bookings = await TableBooking.find({
+        user: new ObjectId(userId),
+      }).populate("user");
+    }
+  
+    if (bookings.length === 0) {
+      throw new ApiError(404, "Error while fetching the bookings");
+    }
+  
+    return res
+      .status(200)
+      .json(new ApiResponse(200, bookings, "Bookings listed successfully"));
+  });
+  
 
 const assignTableNumber = asyncHandler(async(req,res)=>{
   try {
