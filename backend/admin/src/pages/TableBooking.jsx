@@ -8,11 +8,9 @@ function TableBooking() {
     const fetchBooking = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:8000/api/v1/tableBooking/list-booking",
-            { withCredentials: true }
+            "http://localhost:8000/api/v1/tableBooking/list-booking-admin"
           );
           setBookings(res.data.data);
-          console.log(res);
         } catch (error) {
           console.log("Error in fetching the booking.")
         }
