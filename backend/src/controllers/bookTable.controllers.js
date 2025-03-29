@@ -93,4 +93,14 @@ const listTableBooking = asyncHandler(async (req, res) => {
   // }
 });
 
-export { bookTable, cancelTableBooking, listTableBooking };
+const assignTableNumber = asyncHandler(async(req,res)=>{
+  try {
+    const {tableId, tableNumber} = req.body;
+    await TableBooking.findByIdAndUpdate(tableId, {tableNumber: tableNumber});
+    return res.status(200).json(new ApiResponse(200, "Table number assigned successfully"));
+  } catch (error) {
+    throw new ApiError(500, "Error while assigning table number");
+  }
+})
+
+export { bookTable, cancelTableBooking, listTableBooking, assignTableNumber };

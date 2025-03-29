@@ -3,13 +3,10 @@ import { User } from "./user.models";
 
 const odrerSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true,
-    },
-    items: {
-      type: Array,
-      required: true
+    user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
     },
     totalPrice: {
       type: Number,
