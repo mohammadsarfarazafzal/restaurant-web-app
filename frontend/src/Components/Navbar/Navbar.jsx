@@ -159,15 +159,6 @@ function Navbar() {
 
           {
             token?(
-              // <div>
-              // <button
-              //   onClick={()=>logOutUser()}
-              //   className={
-              //     "none md:block bg-orange-500 text-white px-4 py-2 rounded-md transform transition duration-300 hover:scale-105 hover:bg-orange-600 text:sm md:text-base"
-              //   }
-              // >
-              //   Log Out
-              // </button></div>
               <>
               <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>

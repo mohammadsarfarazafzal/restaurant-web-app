@@ -10,6 +10,7 @@ const TableBookingSchema = new mongoose.Schema(
     guests: { type: Number, required: true },
     date: { type: Date, required: true },
     time: { type: String, required: true },
+    tableNumber: {type: Number}
   },
   { timestamps: true }
 );
