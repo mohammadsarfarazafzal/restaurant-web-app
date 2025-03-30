@@ -74,6 +74,9 @@ function ViewBooking() {
               <p className="text-lg text-gray-600">
                 <strong>No. of guests:</strong> {booking.guests}
               </p>
+              <p className="text-lg text-gray-600">
+                <strong>Table Number: </strong> {booking.tableNumber?booking.tableNumber:"Pending"}
+              </p>
 
               {/* Cancel button */}
               <button
