@@ -10,7 +10,6 @@ module.exports = {
           50: '#fff7ed',
           100: '#ffedd5',
           600: '#ea580c',
-          // Add other shades as needed
         },
       },
     },

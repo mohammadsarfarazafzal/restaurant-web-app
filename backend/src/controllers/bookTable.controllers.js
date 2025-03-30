@@ -34,7 +34,9 @@ const bookTable = asyncHandler(async (req, res) => {
 //cancel the booked table
 const cancelTableBooking = asyncHandler(async (req, res) => {
   const bookingId = req.body.bookingId;
-  const find = await TableBooking.findById(bookingId);
+  if(!bookingId){
+    throw new ApiError(400, "No table found")
+  }
   const cancelBooking = await TableBooking.findByIdAndDelete(bookingId);
   
   if (!cancelBooking) {
@@ -66,7 +68,6 @@ const listTableBooking = asyncHandler(async (req, res) => {
 //List of all booking for the admin
 const listTableBookingForAdmin=asyncHandler(async(req,res)=>{
   const bookingsAdmin=await TableBooking.find({}).populate("user");
-  console.log(bookingsAdmin);
   if(bookingsAdmin.length===0){
     throw new ApiError(404,"Error while fetching bookings");
   }
@@ -79,6 +80,9 @@ const assignTableNumber = asyncHandler(async(req,res)=>{
   try {
     const {tableId, tableNumber} = req.body;
     await TableBooking.findByIdAndUpdate(tableId, {tableNumber: tableNumber});
+    if(!tableId || !tableNumber){
+      throw new ApiError(400, "Assign a table to confirm booking.");
+    }
     return res.status(200).json(new ApiResponse(200, "Table number assigned successfully"));
   } catch (error) {
     throw new ApiError(500, "Error while assigning table number");

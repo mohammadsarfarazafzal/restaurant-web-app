@@ -15,7 +15,6 @@ function ViewBooking() {
         { withCredentials: true }
       );
       setBookings(res.data.data);
-      console.log(res);
     } catch (error) {
       toast.error("Error fetching the booking details");
     }
