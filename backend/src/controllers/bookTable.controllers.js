@@ -36,7 +36,7 @@ const cancelTableBooking = asyncHandler(async (req, res) => {
   const bookingId = req.body.bookingId;
   const find = await TableBooking.findById(bookingId);
   const cancelBooking = await TableBooking.findByIdAndDelete(bookingId);
-  
+
   if (!cancelBooking) {
     throw new ApiError(404, "Error while cancelling the booking.");
   }
@@ -54,25 +54,49 @@ const listTableBooking = asyncHandler(async (req, res) => {
     user: new ObjectId(userId),
   }).populate("user");
 
-  if (bookings.length === 0) {
-    throw new ApiError(404, "Error while fetching the bookings");
+  if(bookings.length===0){
+    throw new ApiError(404,"Error while fetching the bookings");
   }
+  //current time
+  const currTime=new Date();
+    const validBookings=[];
+      
+    bookings.forEach((booking)=>{
+        const bookingTime=new Date(booking.createdAt);
+        const timeDiff=(currTime-bookingTime)/(1000*60*60);
+        if(timeDiff>24){
+          TableBooking.findByIdAndDelete(booking._id)
+        }else{
+          validBookings.push(booking);
+        }
+      })
   return res
     .status(200)
-    .json(new ApiResponse(200, bookings, "Bookings listed successfully"));
+    .json(new ApiResponse(200, validBookings, "Bookings listed successfully"));
 
 });
 
 //List of all booking for the admin
 const listTableBookingForAdmin=asyncHandler(async(req,res)=>{
   const bookingsAdmin=await TableBooking.find({}).populate("user");
-  console.log(bookingsAdmin);
   if(bookingsAdmin.length===0){
     throw new ApiError(404,"Error while fetching bookings");
   }
+  const currTime=new Date();
+  const validBookings=[];
+    
+  bookingsAdmin.forEach((booking)=>{
+      const bookingTime=new Date(booking.createdAt);
+      const timeDiff=(currTime-bookingTime)/(1000*60*60);
+      if(timeDiff>24){
+        TableBooking.findByIdAndDelete(booking._id);
+      }else{
+        validBookings.push(booking);
+      }
+    })
   return res
   .status(200)
-  .json(new ApiResponse(200,bookingsAdmin,"Bookings listed successfully for admin"));
+  .json(new ApiResponse(200,validBookings,"Bookings listed successfully for admin"));
 })
 
 const assignTableNumber = asyncHandler(async(req,res)=>{

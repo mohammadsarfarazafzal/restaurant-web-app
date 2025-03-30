@@ -14,8 +14,21 @@ function ViewBooking() {
         "http://localhost:8000/api/v1/tableBooking/list-booking",
         { withCredentials: true }
       );
-      setBookings(res.data.data);
-      console.log(res);
+      const fetchedBooking=res.data.data;
+
+      const currTime=new Date();
+      const validBookings=[];
+      
+      fetchedBooking.forEach((booking)=>{
+        const bookingTime=new Date(booking.createdAt);
+        const timeDiff=(currTime-bookingTime)/(1000*60*60);
+        if(timeDiff>24){
+          cancelBooking(booking._id);
+        }else{
+          validBookings.push(booking);
+        }
+      })
+      setBookings(validBookings);
     } catch (error) {
       toast.error("Error fetching the booking details");
     }
@@ -32,7 +45,8 @@ function ViewBooking() {
         toast.success("Booking cancelled successfully");
         setBookings((prevBookings) =>
             prevBookings.filter((booking) => booking._id !== id)
-          );
+        );
+
         setTimeout(() => {
           navigate("/BookTable");
         }, 3000);
@@ -53,6 +67,7 @@ function ViewBooking() {
       </h1>
 
       {bookings ? (
+        <>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
           {bookings.map((booking) => (
             <div
@@ -86,6 +101,10 @@ function ViewBooking() {
             </div>
           ))}
         </div>
+        <div className="bg-brown-300 p-2 mt-32 rounded-md  shadow-md ">
+        <p className="text-center text-sm md:block">Bookings of table only valid till 24 hours of booking time !!</p>
+      </div>
+      </>
       ) : (
         <p className="text-xl text-gray-500">No Booking Found</p>
       )}
