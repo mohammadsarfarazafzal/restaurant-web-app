@@ -17,29 +17,29 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    emailjs
-      .send(
-        "service_y9e6wrn", //service id of my email in emailjs website
-        "template_1pjsp6k", //template id, template in which the user emails reach to me.
-        {
-          name: formData.name,
-          email: formData.email,
+    const serviceId="service_cpgwqyv";
+    const templateId="template_1pjsp6k"
+    const publicKey="gDwnWrJLSikRm1gjb"
+
+    const templateParams={
+          from_name: formData.name,
+          from_email: formData.email,
           mobile: formData.mobile,
           message: formData.message,
-        },
-        "cIRjHIxe5GYcsG6mA" //Emailjs profile public key
-      )
+    };
+
+    emailjs
+      .send(serviceId,templateId,templateParams,publicKey)
       .then(
         (result) => {
           console.log(result.text);
           setStatus("Message sent successfully");
           setFormData({ name: "", email: "", mobile: "", message: "" });
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.error(error.text);
           setStatus("Failed to send message. Please try again.");
-        }
-      );
+        });
     setFormData({
       name: "",
       email: "",
