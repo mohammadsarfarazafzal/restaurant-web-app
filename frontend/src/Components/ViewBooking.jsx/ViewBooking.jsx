@@ -14,21 +14,8 @@ function ViewBooking() {
         "http://localhost:8000/api/v1/tableBooking/list-booking",
         { withCredentials: true }
       );
-      const fetchedBooking=res.data.data;
 
-      const currTime=new Date();
-      const validBookings=[];
-      
-      fetchedBooking.forEach((booking)=>{
-        const bookingTime=new Date(booking.createdAt);
-        const timeDiff=(currTime-bookingTime)/(1000*60*60);
-        if(timeDiff>24){
-          cancelBooking(booking._id);
-        }else{
-          validBookings.push(booking);
-        }
-      })
-      setBookings(validBookings);
+      setBookings(res.data.data);
     } catch (error) {
       toast.error("Error fetching the booking details");
     }
@@ -89,6 +76,9 @@ function ViewBooking() {
               </p>
               <p className="text-lg text-gray-600">
                 <strong>No. of guests:</strong> {booking.guests}
+              </p>
+              <p className="text-lg text-gray-600">
+                <strong>Table Number: </strong> {booking.tableNumber?booking.tableNumber:"Pending"}
               </p>
 
               {/* Cancel button */}
