@@ -22,9 +22,7 @@ function App() {
         {
           path: "Menu",
           element: (
-            <Provider store={store}>
               <Menu />
-            </Provider>   
           ),
         },
         {
@@ -50,9 +48,7 @@ function App() {
         {
           path:"Cart",
           element:(
-            <Provider store={store}>
               <Cart/>
-            </Provider>
           )
         },
         {

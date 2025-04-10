@@ -5,3 +5,99 @@
 .slick-slide>div{
     margin: 0 10px;
 }
+
+/* Swiper Styles */
+.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px !important; /* Increased padding bottom */
+  }
+  
+  .swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .swiper-slide:hover {
+    transform: translateY(-5px);
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Custom navigation arrows color */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #ea580c !important; /* Orange-600 color from Tailwind */
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    --swiper-navigation-size: 24px;
+  }
+  
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    background-color: white;
+  }
+  
+  /* Custom pagination dots color */
+  .swiper-pagination {
+    position: relative;
+    margin-top: 20px;
+  }
+  
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #9ca3af; /* Gray-400 from Tailwind */
+    opacity: 0.5;
+    margin: 0 5px !important;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: #ea580c !important; /* Orange-600 color from Tailwind */
+    opacity: 1;
+  }
+  
+  .dish-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .swiper-slide {
+      width: 250px;
+      height: 250px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .swiper-slide {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .swiper {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+  }
