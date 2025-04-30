@@ -111,16 +111,18 @@ Restaurant Web App is a comprehensive restaurant management system designed to s
 - `GET /api/cart/all` - Get all cart items
 
 ### Order Routes
-- Coming soon
+- `POST /api/v1/orders/create` - Create a new order
+- `GET /api/v1/orders/user-orders` - Get all orders for logged-in user 
+- `GET /api/v1/orders/all` - Get all orders (admin)
+- `POST /api/v1/orders/update-status` - Update order status (admin)
 
 ## 🚧 Under Development
 
 This project is still in active development. Upcoming features include:
 
-- Order processing and payment integration
+- Payment integration
 - User profile management
 - Enhanced admin analytics
-- Mobile responsiveness
 - Order tracking for customers
 - Email notifications for orders and reservations
 
