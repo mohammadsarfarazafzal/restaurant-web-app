@@ -35,4 +35,9 @@ app.use("/api/v1/menu",menuRouter)
 //booking route
 import bookingRouter from "./routes/bookTable.routes.js"
 app.use("/api/v1/tableBooking",bookingRouter)
+
+//order route
+import orderRouter from "./routes/order.routes.js"
+app.use("/api/v1/orders", orderRouter)
+
 export {app}

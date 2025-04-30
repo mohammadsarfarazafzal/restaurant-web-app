@@ -1,12 +1,12 @@
 import React from 'react'
 import {Navbar,Footer} from './Components'
 import {Outlet} from 'react-router-dom'
-
+import HeadRoom from 'react-headroom'
 
 function Layout() {
   return (
     <>
-        <Navbar/>
+        <HeadRoom><Navbar/></HeadRoom>
         <Outlet/>
         <Footer/>
     </>

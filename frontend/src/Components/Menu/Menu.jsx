@@ -62,7 +62,7 @@ function Menu() {
       {/* Header */}
       <header
         className="relative bg-cover bg-center h-64 flex items-center justify-center text-white"
-        style={{ backgroundImage: "url('/Images/menu_bg.jpg')" }}
+        style={{ backgroundImage: "url('/Images/Background.jpg')" }}
       >
         <div className="bg-black bg-opacity-50 p-4 rounded-md text-center">
           <h1 className="text-3xl md:text-4xl font-bold">Our items</h1>

@@ -1,7 +1,17 @@
-import Router from "express"
+import Router from "express";
+import { verifyJWT } from "../middlewares/auth.middlewares.js";
+import {
+    createOrder,
+    getUserOrders,
+    getAllOrders,
+    updateOrderStatus
+} from "../controllers/order.controllers.js";
 
 const router = Router();
 
-router.route()
+router.route("/create").post(verifyJWT, createOrder);
+router.route("/user-orders").get(verifyJWT, getUserOrders);
+router.route("/all").get(getAllOrders);
+router.route("/update-status").post(updateOrderStatus);
 
 export default router;

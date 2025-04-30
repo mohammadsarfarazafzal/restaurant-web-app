@@ -68,7 +68,7 @@ function Navbar() {
   },[]);
 
   return (
-    <nav className="bg-gray-900 shadow-lg fixed w-full z-50">
+    <nav className="bg-gray-900 shadow-lg w-full relative top-0 left-0 z-[5000]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}

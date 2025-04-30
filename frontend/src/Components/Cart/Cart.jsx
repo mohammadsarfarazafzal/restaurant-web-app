@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify"
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [cartData, setCartData] = useState({});
+  const [orderType, setOrderType] = useState("Delivery");
+  const [address, setAddress] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
+
+
+  const navigate = useNavigate();
+  const notify = (cond, message) => {
+      if(cond){
+        toast.success(message)
+      }
+      else{
+        toast.error(message)
+      }
+    }
 
   const fetchCart = async () => {
     try {
@@ -42,7 +58,6 @@ function Cart() {
         { withCredentials: true }
       );
       fetchCart();
-      console.log(res);
     } catch (error) {
       console.log(error?.message || "Error adding to cart");
     }
@@ -58,9 +73,41 @@ function Cart() {
         { withCredentials: true }
       );
       fetchCart();
-      console.log(res);
     } catch (error) {
       console.log(error?.message || "Error removing from cart");
+    }
+  };
+
+  const handleOrder = async () => {
+    try {
+      const total = cartItems.reduce(
+        (acc, item) => acc + item.price * (cartData[item._id] || 0),
+        0
+      );
+
+      const orderData = {
+        totalPrice: total,
+        orderType: orderType,
+        items: cartItems.map((item) => ({
+          item: item._id,
+          quantity: cartData[item._id],
+        })),
+        ...(orderType === "Delivery" ? { address } : { tableNumber }),
+      };
+
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/orders/create",
+        orderData,
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        notify(true,"Order placed successfully!");
+        setTimeout(()=>{navigate("/orders")},3000)
+      }
+    } catch (error) {
+      console.log("Error placing order");
+      notify(false, "Error Placing Order")
     }
   };
 
@@ -142,15 +189,17 @@ function Cart() {
         <>
           {cartItems.map((item, index) => (
             <div key={item._id} className="px-4 py-1 flex justify-between">
-              {cartData[item._id]>0?(
+              {cartData[item._id] > 0 ? (
                 <>
-                <div>{item.name}</div>
-              <div>
-                ₹{item.price} x {cartData[item._id]} = ₹
-                {item.price * cartData[item._id]}
-              </div>
+                  <div>{item.name}</div>
+                  <div>
+                    ₹{item.price} x {cartData[item._id]} = ₹
+                    {item.price * cartData[item._id]}
+                  </div>
                 </>
-                ):(<></>)}
+              ) : (
+                <></>
+              )}
             </div>
           ))}
 
@@ -169,17 +218,59 @@ function Cart() {
       ) : (
         <></>
       )}
-      {
-        cartItems.length > 0 ? (<>
-          <div className="px-4 py-1 flex justify-end">
-              <div onClick={() => {
-                    alert("Thank You!")
-                  }} className="cursor-pointer bg-green-500 rounded-lg text-white font-semibold w-40 h-8 flex justify-center items-center transition-transform hover:bg-green-600 scale-105">
-                  Continue
-              </div>
+      {cartItems.length > 0 && (
+        <div className="mt-6 space-y-4">
+          <div>
+            <label className="block text-gray-700 font-bold mb-2">
+              Order Type
+            </label>
+            <select
+              value={orderType}
+              onChange={(e) => setOrderType(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              <option value="Delivery">Delivery</option>
+              <option value="Dine-in">Dine-in</option>
+            </select>
+          </div>
+
+          {orderType === "Delivery" ? (
+            <div>
+              <label className="block text-gray-700 font-bold mb-2">
+                Delivery Address
+              </label>
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full p-2 border rounded"
+                rows="3"
+                required
+              />
             </div>
-        </>):(<></>)
-      }
+          ) : (
+            <div>
+              <label className="block text-gray-700 font-bold mb-2">
+                Table Number
+              </label>
+              <input
+                type="number"
+                value={tableNumber}
+                onChange={(e) => setTableNumber(e.target.value)}
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
+          )}
+
+          <button
+            onClick={handleOrder}
+            className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors"
+          >
+            Place Order (Cash on Delivery)
+          </button>
+          <ToastContainer/>
+        </div>
+      )}
     </div>
   );
 }
