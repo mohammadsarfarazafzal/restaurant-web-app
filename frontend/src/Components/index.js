@@ -9,7 +9,7 @@ import BookTable from "./BookTable/BookTable"
 import Cart from "./Cart/Cart"
 import SignUpForm from "./Form/SignUpForm"
 import LoginForm from "./Form/LoginForm"
-import ViewBooking from "./ViewBooking.jsx/ViewBooking"
+import ViewBooking from "./ViewBooking/ViewBooking"
 import Orders from "./Orders/Orders"
 import Help from "./Help/Help"
 
