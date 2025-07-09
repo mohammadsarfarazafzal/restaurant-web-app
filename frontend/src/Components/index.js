@@ -12,5 +12,6 @@ import LoginForm from "./Form/LoginForm"
 import ViewBooking from "./ViewBooking/ViewBooking"
 import Orders from "./Orders/Orders"
 import Help from "./Help/Help"
+import Admin from "./Admin/Admin"
 
-export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm,ViewBooking, Orders, Help}
+export {Home,Navbar,Footer,Menu,Contact,About,Services,BookTable,Cart,SignUpForm,LoginForm,ViewBooking, Orders, Help, Admin}

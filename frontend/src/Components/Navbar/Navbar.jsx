@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
+import { setAdmin } from "../../StateManagement/Cart_Management/Features/adminSlice.js";
 import {
   ShoppingBagIcon,
   TableCellsIcon,
@@ -13,6 +14,7 @@ import {
   ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
+  BuildingLibraryIcon
 } from "@heroicons/react/24/outline";
 
 const profileMenuItems = [
@@ -23,9 +25,19 @@ const profileMenuItems = [
   { label: "Sign Out", icon: PowerIcon },
 ];
 
+const profileMenuItemsAdmin = [
+  { label: "Cart", icon: ShoppingCartIcon, path: "/cart" },
+  { label: "Orders", icon: ShoppingBagIcon, path: "/orders" },
+  { label: "Tables", icon: TableCellsIcon, path: "/BookedTable" },
+  { label: "Help", icon: LifebuoyIcon, path: "/help" },
+  { label: "Admin", icon: BuildingLibraryIcon, path: "/admin" },
+  { label: "Sign Out", icon: PowerIcon },
+];
+
 function Navbar() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const adminToken = useSelector((state)=>state.admin.token);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
@@ -44,10 +56,14 @@ function Navbar() {
       
       if(res.data.success){
         dispatch(setToken(true));
+        if(res.data.data.admin){
+          dispatch(setAdmin(true));
+        }
       }
     } catch (error) {
       console.log(error.message || error);
       dispatch(setToken(false));
+      dispatch(setAdmin(false));
     }
   }
 
@@ -56,6 +72,7 @@ function Navbar() {
       const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
             dispatch(setToken(false));
+            dispatch(setAdmin(false));
             navigate("/SignUp");
             }
     } catch (error) {
@@ -116,25 +133,25 @@ function Navbar() {
                 {isProfileOpen && (
                   <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div className="py-1">
-                      {profileMenuItems.map(({ label, icon: Icon, path }, index) => (
-                        <button
-                          key={label}
-                          onClick={() => {
-                            if (index === profileMenuItems.length - 1) {
-                              logOutUser();
-                            } else {
-                              navigate(path);
-                            }
-                            setIsProfileOpen(false);
-                          }}
-                          className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
-                        >
-                          <Icon className="h-5 w-5 mr-2 text-orange-600" />
-                          <span className={index === profileMenuItems.length - 1 ? "text-red-600" : ""}>
-                            {label}
-                          </span>
-                        </button>
-                      ))}
+                      {(adminToken ? profileMenuItemsAdmin : profileMenuItems).map(({ label, icon: Icon, path }, index) => (
+            <button
+              key={label}
+              onClick={() => {
+                if (index === (adminToken ? profileMenuItemsAdmin.length : profileMenuItems.length) - 1) {
+                  logOutUser();
+                } else {
+                  navigate(path);
+                }
+                setIsProfileOpen(false);
+              }}
+              className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+            >
+              <Icon className="h-5 w-5 mr-2 text-orange-600" />
+              <span className={index === (adminToken ? profileMenuItemsAdmin.length : profileMenuItems.length) - 1 ? "text-red-600" : ""}>
+                {label}
+              </span>
+            </button>
+          ))}
                     </div>
                   </div>
                 )}
