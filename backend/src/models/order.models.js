@@ -39,6 +39,15 @@ const odrerSchema = new mongoose.Schema(
         return this.orderType === "Delivery";
       },
     },
+    paymentId:{
+      type:String
+    },
+    razorpayOrderId:{
+      type:String
+    },
+    signature:{
+      type:String
+    }
   },
   { timestamps: true }
 );

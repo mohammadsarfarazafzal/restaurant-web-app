@@ -7,7 +7,7 @@ const Admin = () => {
     <div className="flex h-screen bg-gray-50">
         <AdminSidebar/>
       <div className="flex flex-col flex-1">
-        <AdminHeader/>
+        {/* <AdminHeader/> */}
         <main className="p-6 bg-orange-50/20 flex-1 overflow-y-scroll">
           <Outlet />
         </main>
