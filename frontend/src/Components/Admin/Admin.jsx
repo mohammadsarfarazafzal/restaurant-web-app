@@ -1,14 +1,13 @@
-// components/layout/DashboardLayout.jsx
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import AdminSidebar from "./AdminSidebar";
+import AdminHeader from "./AdminHeader";
 
-const DashboardLayout = () => {
+const Admin = () => {
   return (
     <div className="flex h-screen bg-gray-50">
-        <Sidebar />
+        <AdminSidebar/>
       <div className="flex flex-col flex-1">
-        <Header />
+        <AdminHeader/>
         <main className="p-6 bg-orange-50/20 flex-1 overflow-y-scroll">
           <Outlet />
         </main>
@@ -17,4 +16,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default Admin;

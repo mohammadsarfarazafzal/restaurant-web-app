@@ -1,14 +1,14 @@
 // components/layout/Sidebar.jsx
 import { Link, useLocation } from 'react-router-dom';
 
-const Sidebar = () => {
+const AdminSidebar = () => {
   const { pathname } = useLocation();
   
   const menuItems = [
-    { name: 'Add Menu', path: '/add-menu' },
-    { name: 'Menu List', path: '/menu-list' },
-    { name: 'Orders', path: '/orders' },
-    {name:'Table Bookings',path:'/table-bookings'}
+    { name: 'Add Menu', path: '/admin/add-menu' },
+    { name: 'Menu List', path: '/admin/menu-list' },
+    { name: 'Orders', path: '/admin/orders' },
+    {name:'Table Bookings',path:'/admin/table-bookings'}
   ];
 
   return (
@@ -35,4 +35,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

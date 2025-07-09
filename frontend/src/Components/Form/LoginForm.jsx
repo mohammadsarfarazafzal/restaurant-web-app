@@ -4,6 +4,7 @@ import axios from "axios";
 import {toast, ToastContainer} from "react-toastify"
 import { useSelector, useDispatch } from "react-redux";
 import { setToken } from "../../StateManagement/Cart_Management/Features/authSlice.js";
+import { setAdmin } from "../../StateManagement/Cart_Management/Features/adminSlice.js";
 
 import {
   Card,
@@ -15,6 +16,7 @@ import {
 
 const LoginForm = () => {
   const token = useSelector((state)=>state.auth.token);
+  const adminToken = useSelector((state)=>state.admin.token);
   const dispatch=useDispatch()
   const [formdata, setFormData] = useState({
     email: "",
@@ -40,6 +42,10 @@ const LoginForm = () => {
       
       if(res.data.success){
         dispatch(setToken(true));
+        if(res.data.data.user.admin){
+          dispatch(setAdmin(true));
+          
+        }
         navigate("/Menu")
       }
 
@@ -127,7 +133,7 @@ const LoginForm = () => {
           />
           <Button
             onClick={(e) => {
-              e.preventDefault(); // Prevent form submission
+              e.preventDefault();
               login();
             }}
             className="mt-6"

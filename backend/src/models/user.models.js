@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema(
     cartData:{
         type: Object,
         default: {}
+    },
+    admin:{
+      type: Boolean,
+      default: false
     }
 },{timestamps:true, minimize:false}) // minimize false is used so that our empty cartData attribute is created
 

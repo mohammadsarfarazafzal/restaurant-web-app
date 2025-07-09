@@ -1,13 +1,7 @@
-const Header = ({ }) => {
+const AdminHeader = ({ }) => {
   return (
     <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
       <div className="flex items-center">
-        {/* <button
-          onClick={toggleSidebar}
-          className="text-gray-600 hover:text-orange-500 focus:outline-none"
-        >
-          ☰
-        </button> */}
 
         <h1 className="ml-4 text-lg font-medium text-gray-800">
           Restaurant Admin Panel
@@ -31,4 +25,4 @@ const Header = ({ }) => {
   );
 };
 
-export default Header;
+export default AdminHeader;

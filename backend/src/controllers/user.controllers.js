@@ -17,7 +17,7 @@ const generateTokens = async (user) => {
 };
 // register user
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullname, email, password, phoneNumber, address } = req.body;
+  const { fullname, email, password, phoneNumber, address, admin } = req.body;
 
   //If any field is blank
   if (
@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     phoneNumber,
     address,
+    admin
   });
   //remove password and refreshToken
   const createdUser = await User.findById(user._id).select(
@@ -55,8 +56,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const logInUser = asyncHandler(async (req, res) => {
   const { email, password, phoneNumber } = req.body;
+
   if (!(email || phoneNumber)) {
-    throw new ApiError("Email is Required.", 400);
+    throw new ApiError("Email or Number is Required.", 400);
   }
   const user = await User.findOne({ $or: [{ email }, { phoneNumber }] });
   if (!user) {
@@ -83,11 +85,11 @@ const logInUser = asyncHandler(async (req, res) => {
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
-      new ApiResponse(200, "Login Successful", {
+      new ApiResponse(200,  {
         user: loggedInUser,
         accessToken,
         refreshToken,
-      })
+      }, "Login Successful")
     );
 });
 
@@ -201,8 +203,9 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const authenticate = asyncHandler((req, res) => {
+  const admin = req.user.admin;
   return res.status(200).json(
-      new ApiResponse(200, "User is LoggedIn"));
+      new ApiResponse(200, {admin}, "User is LoggedIn"));
 });
 
 

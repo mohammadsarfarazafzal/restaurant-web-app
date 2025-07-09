@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Orders = () => {
+const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
@@ -78,4 +78,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default AdminOrders;
