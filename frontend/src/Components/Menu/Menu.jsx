@@ -18,7 +18,7 @@ function Menu() {
   const fetchMenu = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get("http://localhost:8000/api/v1/menu/list");
+      const res = await axios.get("https://restaurant-backend-3jsp.onrender.com/api/v1/menu/list");
       if (res.data.success) {
         setDishes(res.data.data);
       }
@@ -32,7 +32,7 @@ function Menu() {
   const handleAddToCart = async (itemId) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/cart/add",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/cart/add",
         { itemId },
         { withCredentials: true }
       );
@@ -67,7 +67,7 @@ function Menu() {
     fetchMenu();
     const fetchCartCount = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/cart/count", {
+        const res = await axios.get("https://restaurant-backend-3jsp.onrender.com/api/v1/cart/count", {
           withCredentials: true,
         });
         if (res.data.success) {

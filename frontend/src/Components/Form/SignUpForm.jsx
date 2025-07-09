@@ -55,7 +55,7 @@ const SignUpForm = () => {
         return;
       }
       try {
-        const res = await axios.post("http://localhost:8000/api/v1/users/register", formData);
+        const res = await axios.post("https://restaurant-backend-3jsp.onrender.com/api/v1/users/register", formData);
         setFormData({
           fullname: "",
           email: "",

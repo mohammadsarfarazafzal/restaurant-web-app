@@ -22,7 +22,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/v1/cart/all", {
+      const res = await axios.get("https://restaurant-backend-3jsp.onrender.com/api/v1/cart/all", {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -37,7 +37,7 @@ function Cart() {
   const handleDelete = async (id) => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/cart/delete",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/cart/delete",
         { itemId: id },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ function Cart() {
   const addToCart = async (id) => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/cart/add",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/cart/add",
         { itemId: id },
         { withCredentials: true }
       );
@@ -63,7 +63,7 @@ function Cart() {
   const removeFromCart = async (id) => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/cart/remove",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/cart/remove",
         { itemId: id },
         { withCredentials: true }
       );
@@ -104,7 +104,7 @@ function Cart() {
       );
 
       const razorpayRes = await axios.post(
-        "http://localhost:8000/api/v1/orders/razorpay-order",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/orders/razorpay-order",
         { amount: total },
         { withCredentials: true }
       );
@@ -133,7 +133,7 @@ function Cart() {
           };
 
           const res = await axios.post(
-            "http://localhost:8000/api/v1/orders/create",
+            "https://restaurant-backend-3jsp.onrender.com/api/v1/orders/create",
             orderData,
             { withCredentials: true }
           );

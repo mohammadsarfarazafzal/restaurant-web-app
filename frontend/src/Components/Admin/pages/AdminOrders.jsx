@@ -7,7 +7,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/orders/all');
+      const res = await axios.get('https://restaurant-backend-3jsp.onrender.com/api/v1/orders/all');
       setOrders(res.data.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -16,7 +16,7 @@ const AdminOrders = () => {
 
   const updateStatus = async (orderId, newStatus) => {
     try {
-      await axios.post('http://localhost:8000/api/v1/orders/update-status', {
+      await axios.post('https://restaurant-backend-3jsp.onrender.com/api/v1/orders/update-status', {
         orderId,
         orderStatus: newStatus
       });

@@ -7,7 +7,6 @@ import { setAdmin } from "../../StateManagement/Cart_Management/Features/adminSl
 import {
   ShoppingBagIcon,
   TableCellsIcon,
-  LifebuoyIcon,
   PowerIcon,
   ShoppingCartIcon,
   UserCircleIcon,
@@ -21,7 +20,6 @@ const profileMenuItems = [
   { label: "Cart", icon: ShoppingCartIcon, path: "/cart" },
   { label: "Orders", icon: ShoppingBagIcon, path: "/orders" },
   { label: "Tables", icon: TableCellsIcon, path: "/BookedTable" },
-  { label: "Help", icon: LifebuoyIcon, path: "/help" },
   { label: "Sign Out", icon: PowerIcon },
 ];
 
@@ -29,7 +27,6 @@ const profileMenuItemsAdmin = [
   { label: "Cart", icon: ShoppingCartIcon, path: "/cart" },
   { label: "Orders", icon: ShoppingBagIcon, path: "/orders" },
   { label: "Tables", icon: TableCellsIcon, path: "/BookedTable" },
-  { label: "Help", icon: LifebuoyIcon, path: "/help" },
   { label: "Admin", icon: BuildingLibraryIcon, path: "/admin" },
   { label: "Sign Out", icon: PowerIcon },
 ];
@@ -52,7 +49,7 @@ function Navbar() {
 
   const authentication = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/auth",{},{withCredentials:true});
+      const res = await axios.post("https://restaurant-backend-3jsp.onrender.com/api/v1/users/auth",{},{withCredentials:true});
       
       if(res.data.success){
         dispatch(setToken(true));
@@ -69,7 +66,7 @@ function Navbar() {
 
   const logOutUser = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/logout",{},{withCredentials:true})
+      const res = await axios.post("https://restaurant-backend-3jsp.onrender.com/api/v1/users/logout",{},{withCredentials:true})
       if(res.data.success){
             dispatch(setToken(false));
             dispatch(setAdmin(false));
