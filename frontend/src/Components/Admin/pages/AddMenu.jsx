@@ -19,7 +19,7 @@ const AddMenu = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/menu/add', data, {
+      const res = await axios.post('https://restaurant-backend-3jsp.onrender.com/api/v1/menu/add', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

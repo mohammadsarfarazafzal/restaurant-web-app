@@ -8,7 +8,7 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/orders/user-orders",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/orders/user-orders",
         { withCredentials: true }
       );
       setOrders(res.data.data);

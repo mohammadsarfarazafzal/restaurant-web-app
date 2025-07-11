@@ -11,15 +11,35 @@ import {
     Typography,
   } from "@material-tailwind/react";
 
+const validateForm = (data) => {
+  // at least 2 characters
+  if (!data.fullname || data.fullname.trim().length < 2) {
+    return "Please enter a valid name.";
+  }
+
+  if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data.email)) {
+    return "Please enter a valid email address.";
+  }
+  // 10 digits
+  if (!/^\d{10}$/.test(data.phoneNumber)) {
+    return "Please enter a valid 10-digit phone number.";
+  }
+  // at least 8 characters
+  if (!data.password || data.password.length < 8) {
+    return "Password must be at least 8 characters.";
+  }
+  return null;
+};
+
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     phoneNumber: "",
-    address: "",
     password: ""
   })
   const navigate = useNavigate();
+  const [agreed, setAgreed] = useState(false);
   const notify = (cond, message) => {
     if(cond){
       toast.success(message)
@@ -29,26 +49,30 @@ const SignUpForm = () => {
     }
   }
     const register = async () => {
-        try {
-            const res = await axios.post("http://localhost:8000/api/v1/users/register",formData);
-            setFormData({
-              fullname: "",
-              email: "",
-              phoneNumber: "",
-              address: "",
-              password: ""
-            })
-            if(res.data.success){
-              notify(true,"Thank You, Account Created Successfully!");
-            setTimeout(()=>{
-              navigate("/login");
-            },3000)
-            }
-        } catch (error) {
-            console.error(error);
-            notify(false, "Account Creation Failed")
-            
+      const validationError = validateForm(formData);
+      if (validationError) {
+        notify(false, validationError);
+        return;
+      }
+      try {
+        const res = await axios.post("https://restaurant-backend-3jsp.onrender.com/api/v1/users/register", formData);
+        setFormData({
+          fullname: "",
+          email: "",
+          phoneNumber: "",
+          password: ""
+        });
+        if (res.data.success) {
+          notify(true, "Thank You, Account Created Successfully!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
         }
+      } catch (error) {
+        console.error(error);
+        notify(false, "Account Creation Failed")
+        
+      }
     }
   return (
     <div className='flex justify-center items-center'>
@@ -100,19 +124,6 @@ const SignUpForm = () => {
               }}
             />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Your Complete Address
-            </Typography>
-            <Input
-            value={formData.address}
-            onChange={(e)=>{setFormData({...formData, address: e.target.value})}}
-              size="lg"
-              placeholder="Building Number, Street, City, Pincode, State"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
               Password
             </Typography>
             <Input
@@ -128,6 +139,8 @@ const SignUpForm = () => {
             />
           </div>
           <Checkbox
+          checked={agreed}
+          onChange={(e)=>setAgreed(e.target.checked)}
             label={
               <Typography
                 variant="small"
@@ -146,6 +159,7 @@ const SignUpForm = () => {
             containerProps={{ className: "-ml-2.5" }}
           />
           <Button
+          disabled={!agreed}
           onClick={()=>{
             register();
           }}

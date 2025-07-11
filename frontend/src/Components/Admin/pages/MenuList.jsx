@@ -7,7 +7,7 @@ const MenuList = () => {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/v1/menu/list');
+        const res = await axios.get('https://restaurant-backend-3jsp.onrender.com/api/v1/menu/list');
         if (res.data.success) {
           setMenuItems(res.data.data);
         }
@@ -20,7 +20,7 @@ const MenuList = () => {
 
   const handleDelete = async (id) => {
     try {
-        await axios.post(`http://localhost:8000/api/v1/menu/remove`, {
+        await axios.post(`https://restaurant-backend-3jsp.onrender.com/api/v1/menu/remove`, {
             id: id
           });
       setMenuItems(menuItems.filter(item => item._id !== id));

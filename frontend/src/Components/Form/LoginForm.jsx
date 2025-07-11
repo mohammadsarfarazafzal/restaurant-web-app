@@ -30,7 +30,7 @@ const LoginForm = () => {
   const login = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
+        "https://restaurant-backend-3jsp.onrender.com/api/v1/users/login",
         formdata, {withCredentials:true}
       );
       
@@ -113,24 +113,6 @@ const LoginForm = () => {
               }}
             />
           </div>
-          <Checkbox
-            label={
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center font-normal"
-              >
-                I agree the
-                <a
-                  href="#"
-                  className="font-medium transition-colors hover:text-gray-900"
-                >
-                  &nbsp;Terms and Conditions
-                </a>
-              </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-          />
           <Button
             onClick={(e) => {
               e.preventDefault();

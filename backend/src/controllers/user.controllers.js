@@ -17,11 +17,11 @@ const generateTokens = async (user) => {
 };
 // register user
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullname, email, password, phoneNumber, address, admin } = req.body;
+  const { fullname, email, password, phoneNumber, admin } = req.body;
 
   //If any field is blank
   if (
-    [fullname, email, password, phoneNumber, address].some(
+    [fullname, email, password, phoneNumber].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -40,7 +40,6 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     phoneNumber,
-    address,
     admin
   });
   //remove password and refreshToken

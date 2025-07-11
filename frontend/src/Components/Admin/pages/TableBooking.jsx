@@ -9,7 +9,7 @@ function TableBooking() {
     const fetchBooking = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:8000/api/v1/tableBooking/list-booking-admin"
+            "https://restaurant-backend-3jsp.onrender.com/api/v1/tableBooking/list-booking-admin"
           );
           setBookings(res.data.data);
           
@@ -20,7 +20,7 @@ function TableBooking() {
     const assignTableNumber = async (id, tableNumber) => {
         try {
           const res = await axios.post(
-            "http://localhost:8000/api/v1/tableBooking/assign-table/",
+            "https://restaurant-backend-3jsp.onrender.com/api/v1/tableBooking/assign-table/",
             { tableId:id,
               tableNumber:parseInt(tableNumber) }
           );
@@ -34,7 +34,7 @@ function TableBooking() {
       }
       const cancelBooking = async (id) =>{
         try {
-          const res = await axios.post("http://localhost:8000/api/v1/tableBooking/cancel-booking",{bookingId:id})
+          const res = await axios.post("https://restaurant-backend-3jsp.onrender.com/api/v1/tableBooking/cancel-booking",{bookingId:id})
           if(res.data.success){
             fetchBooking();
           }
