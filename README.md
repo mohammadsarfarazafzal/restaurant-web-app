@@ -120,10 +120,8 @@ Restaurant Web App is a comprehensive restaurant management system designed to s
 
 This project is still in active development. Upcoming features include:
 
-- Payment integration
 - User profile management
 - Enhanced admin analytics
-- Order tracking for customers
 - Email notifications for orders and reservations
 
 ## 👥 Contributors
