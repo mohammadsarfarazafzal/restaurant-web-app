@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { User } from "./user.models.js";
+import { Menu } from "./menu.models.js";
 
 const odrerSchema = new mongoose.Schema(
   {
@@ -47,7 +48,20 @@ const odrerSchema = new mongoose.Schema(
     },
     signature:{
       type:String
-    }
+    },
+    items:[
+            {
+                menuItem:{
+                    type:mongoose.Schema.Types.ObjectId,
+                    ref:Menu,
+                },
+                quantity:{
+                    type: Number,
+                    default: 0,
+                    required:true
+                },   
+            }
+        ],
   },
   { timestamps: true }
 );

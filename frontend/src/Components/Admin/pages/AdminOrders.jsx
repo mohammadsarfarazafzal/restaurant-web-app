@@ -1,4 +1,3 @@
-// pages/Orders.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -20,7 +19,7 @@ const AdminOrders = () => {
         orderId,
         orderStatus: newStatus
       });
-      fetchOrders(); // Refresh orders after update
+      fetchOrders();
     } catch (error) {
       console.error('Error updating order:', error);
     }
@@ -87,6 +86,31 @@ const AdminOrders = () => {
               >
                 Mark Completed
               </button>
+            </div>
+            <div className="mt-2">
+              <h4 className="font-semibold text-gray-700">Ordered Items:</h4>
+              <div className="space-y-1 mt-1">
+                {order.items && order.items.length > 0 ? (
+                  order.items.map((item) => (
+                    <div key={item._id} className="flex justify-between text-sm">
+                      <div className="flex gap-2">
+                        <span>{item.menuItem?.name || "Item not available"}</span>
+                        <span className="text-gray-500">
+                          (₹{item.menuItem?.price || 0})
+                        </span>
+                      </div>
+                      <div className="flex gap-4">
+                        <span>x{item.quantity}</span>
+                        <span className="font-medium">
+                          ₹{(item.menuItem?.price || 0) * item.quantity}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No items details available</p>
+                )}
+              </div>
             </div>
           </div>
         ))}
