@@ -70,7 +70,7 @@ function Menu() {
         const res = await axios.get("https://restaurant-backend-3jsp.onrender.com/api/v1/cart/all", {
           withCredentials: true,
         });
-        if (res.data.success) {
+        if (res.data.data.success) {
           setCartCount(res.data.data.cartItems.length);
         }
       } catch (error) {

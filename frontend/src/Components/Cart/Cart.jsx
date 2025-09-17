@@ -123,7 +123,7 @@ function Cart() {
             totalPrice: total,
             orderType: orderType,
             items: cartItems.map((item) => ({
-              item: item,
+              menuItem: item,
               quantity: cartData[item._id],
             })),
             ...(orderType === "Delivery" ? { address } : { tableNumber }),
