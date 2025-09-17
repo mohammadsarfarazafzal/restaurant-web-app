@@ -6,7 +6,7 @@ const odrerSchema = new mongoose.Schema(
   {
     user: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: User,
           required: true,
     },
     totalPrice: {
@@ -52,7 +52,7 @@ const odrerSchema = new mongoose.Schema(
     items:[
             {
                 menuItem:{
-                    type:mongoose.Schema.Types.ObjectId,
+                    type:Object,
                     ref:Menu,
                 },
                 quantity:{

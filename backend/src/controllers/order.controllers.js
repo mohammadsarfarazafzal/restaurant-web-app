@@ -75,7 +75,7 @@ const createRazorpayOrder = asyncHandler(async (req, res) => {
 const getUserOrders = asyncHandler(async (req, res) => {
     try {
         const orders = await Order.find({ user: req.user._id })
-            .populate('items.menuItem')
+            .populate('items')
             .sort({ createdAt: -1 });
 
         return res.status(200).json(
@@ -91,7 +91,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
     try {
         const orders = await Order.find({})
             .populate('user', 'fullname phoneNumber')
-            .populate('items.menuItem')
+            .populate('items')
             .sort({ createdAt: -1 });
 
         return res.status(200).json(
